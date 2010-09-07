@@ -8,4 +8,11 @@ public class Tuple {
 		this.size = size;
 		this.value = value; 
 	}
+	
+	public int getSize(){
+		return size;
+	}
+	public int getValue(){
+		return value;
+	}
 }

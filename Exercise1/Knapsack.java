@@ -7,15 +7,13 @@ import java.util.*;
 public class Knapsack {
 	
 	private String fulltext = null;
-	private int size;
-	private int value;
+	private int capacity = 0;
 	private ArrayList<Tuple> list; 
 	
 	/**
 	 * Constructor
 	 */
 	public Knapsack(){
-		Tuple t = new Tuple(size, value);
 		list = new ArrayList<Tuple>();
 	}
 	
@@ -48,21 +46,38 @@ public class Knapsack {
 				if(fulltext.startsWith("capacity")){
 					StringTokenizer equaltock = new StringTokenizer(fulltext, "=");
 					while(equaltock.hasMoreTokens()){
-						System.out.println(equaltock.nextToken());
+						if(equaltock.countTokens() == 1){ //after comma
+							capacity = Integer.parseInt(equaltock.nextToken());
+							System.out.println(capacity);
+						}
+						else{
+							equaltock.nextToken(); //not interested in this one
+						}
 					}
 				}
 				else{
 				String t = removePar(fulltext);
+				
 				StringTokenizer tock = new StringTokenizer(t, ",");
-			//	lägg in i size
+				int size = 0;
+				int value = 0;
+	
 				while(tock.hasMoreTokens()){
-					
-					System.out.println(tock.nextToken());
-					//lägg in i values
+					if(tock.countTokens() == 2){ //before comma, size
+						size = Integer.parseInt(tock.nextToken());
+					}
+					else{ //value
+						value = Integer.parseInt(tock.nextToken());
+					}
 				}
+				Tuple tuple = new Tuple(size, value);
+				System.out.println(tuple.getSize() + " " + tuple.getValue());
+				
+				list.add(tuple);
 								
 			}
 		}
+			file.close();
 		}
 			catch(IOException e){
 			System.out.println("epic fail");
