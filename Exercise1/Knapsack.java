@@ -7,8 +7,12 @@ import java.util.*;
 
 public class Knapsack {
 	
+	private String fileName = "third.txt";
+	
 	private String fulltext = null;
 	private int capacity = 0;
+	private int bestValue = 0;
+	private int bestSet = 0;
 	private ArrayList<Tuple> list; 
 	private ArrayList<ArrayList<Tuple>> subSets;
 	
@@ -30,7 +34,40 @@ public class Knapsack {
 		knap.readingTheFile();
 		knap.createPowerset();
 		knap.printSubsets();
+		knap.dunderhonung();
 	}
+	
+	public void dunderhonung(){
+		
+		
+		for(int i = 0; i < subSets.size();i++){
+			
+			int sumSizes = 0;
+			int sumValue = 0;
+			
+			for(int j = 0; j < subSets.get(i).size(); j++){
+				Tuple tuple = subSets.get(i).get(j);
+				sumSizes += tuple.getSize();
+				sumValue += tuple.getValue();
+			}
+			if(sumSizes < capacity){
+				if(sumValue > bestValue){
+					System.out.println("changing from "+ bestValue);
+					bestValue = sumValue;
+					System.out.println("to "+ bestValue);
+					bestSet = i;
+				}
+			}
+		}
+		
+		if(subSets.get(bestSet).size() == 0){
+			System.out.println("chosen , value = 0");
+		}
+		for(int k = 0; k < subSets.get(bestSet).size();k++){
+			System.out.println(subSets.get(bestSet).get(k).getSize() + "/" + subSets.get(bestSet).get(k).getValue());
+		}
+	}
+	
 	
 	public void createPowerset(){
 		int elements = list.size();
@@ -79,7 +116,7 @@ public class Knapsack {
 	 * @throws IOException
 	 */
 	public void readingTheFile() throws IOException{
-		FileReader file = new FileReader("firstexample.txt");
+		FileReader file = new FileReader(fileName);
 		BufferedReader reading = new BufferedReader(file); 
 		fulltext = new String();
 
