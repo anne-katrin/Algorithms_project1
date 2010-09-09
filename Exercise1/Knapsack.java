@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Knapsack {
 	
-	private String fileName = "third.txt";
+	private String fileName = "second.txt";
 	
 	private String fulltext = null;
 	private int capacity = 0;
@@ -50,15 +50,21 @@ public class Knapsack {
 				sumSizes += tuple.getSize();
 				sumValue += tuple.getValue();
 			}
-			if(sumSizes < capacity){
+			if(sumSizes <= capacity){
 				if(sumValue > bestValue){
-					System.out.println("changing from "+ bestValue);
+					//System.out.println("changing from "+ bestValue);
 					bestValue = sumValue;
-					System.out.println("to "+ bestValue);
+					//System.out.println("to "+ bestValue);
 					bestSet = i;
 				}
 			}
 		}
+		
+		printBestSet();
+
+	}
+
+	public void printBestSet(){
 		
 		if(subSets.get(bestSet).size() == 0){
 			System.out.println("chosen , value = 0");
@@ -66,8 +72,8 @@ public class Knapsack {
 		for(int k = 0; k < subSets.get(bestSet).size();k++){
 			System.out.println(subSets.get(bestSet).get(k).getSize() + "/" + subSets.get(bestSet).get(k).getValue());
 		}
+		System.out.println("Best value " + bestValue);
 	}
-	
 	
 	public void createPowerset(){
 		int elements = list.size();
