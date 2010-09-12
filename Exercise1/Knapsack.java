@@ -3,22 +3,28 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-
+/**
+ * Lab 1: an exhaustive search for the knapsack problem.
+ * 
+ * @author Anne-Katrin Krolovitsch 
+ * @author Linda Nilsson
+ *
+ */
 public class Knapsack {	
 	private String fileName = "second.txt";
 	private String fulltext = null;
 	private int capacity = 0;
 	private int bestValue = 0;
 	private int bestSet = 0;
-	private ArrayList<Tuple> list; 
-	private ArrayList<ArrayList<Tuple>> subSets;
+	private ArrayList<Tuple> inputList; 
+	private ArrayList<ArrayList<Tuple>> subSetList;
 	
 	/**
 	 * Constructor
 	 */
 	public Knapsack(){
-		list = new ArrayList<Tuple>();
-		subSets = new ArrayList<ArrayList<Tuple>>();
+		inputList = new ArrayList<Tuple>();
+		subSetList = new ArrayList<ArrayList<Tuple>>();
 	}
 	
 	/**
@@ -28,17 +34,17 @@ public class Knapsack {
 	 */
 	public static void main(String[] args) throws IOException {
 		Knapsack knap = new Knapsack();
-		knap.readingTheFile();
+		knap.readFile();
 		knap.createPowerset();
 		knap.printSubsets();
-		knap.dunderhonung();
+		knap.selectBestSet();
 	}
 	
 	/**
 	 * is reading the contents of a file
 	 * @throws IOException
 	 */
-	public void readingTheFile() throws IOException{
+	public void readFile() throws IOException{
 		FileReader file = new FileReader(fileName);
 		BufferedReader reading = new BufferedReader(file); 
 		fulltext = new String();
@@ -74,7 +80,7 @@ public class Knapsack {
 				Tuple tuple = new Tuple(size, value);
 				System.out.println(tuple.getSize() + " " + tuple.getValue());
 				
-				list.add(tuple);							
+				inputList.add(tuple);							
 			}
 		}
 			file.close();
@@ -108,30 +114,30 @@ public class Knapsack {
 	 *
 	 */
 	public void createPowerset(){
-		int elements = list.size();
-		long noSubSets = (long) Math.pow(2, elements); //saving 2^n elements in noSubSets
+		int inputSize = inputList.size();
+		long subSetsSize = (long) Math.pow(2, inputSize); //the number of possible subsets 2^n
 		
-		for(long i = 0; i < noSubSets; i++){ 
-			long elem = 1;
+		for(long i = 0; i < subSetsSize; i++){ 
+			long elementToInclude = 1;
 			ArrayList<Tuple> tempList = new ArrayList<Tuple>(); 
 			
-			for(int j = 0; j < elements; j++){ // as long as j is less than the number of tuples in the list
-//				long b = i & elem;
-//				System.out.println("elem = " + elem);
+			for(int j = 0; j < inputSize; j++){ // as long as j is less than the number of tuples in the list
+				long b = i & elementToInclude;
+//				System.out.println("elem = " + elementToInclude);
 //				System.out.println("i = " + i);
-//				System.out.println("i & elem " + b);
-				if((i & elem) != 0){//Bit masking: performs logical "bitwise-and" operation 
-					tempList.add(list.get(j));
-					System.out.println("loop add " + list.get(j));
+//				System.out.println("i & elem " + b); 
+				if((i & elementToInclude) != 0){//Bit masking: performs logical "bitwise-and" operation 
+					tempList.add(inputList.get(j));
+//					System.out.println("loop add " + inputList.get(j));
 				}
-				elem = elem << 1; //Bit shifting to the left by 1
+				elementToInclude = elementToInclude << 1; //Bit shifting to the left by 1
 			}
-			subSets.add(tempList);
+			subSetList.add(tempList);
 		}
 	}
 	
 	public void printSubsets(){
-		Iterator itr = subSets.iterator(); 
+		Iterator itr = subSetList.iterator(); 
 		int count = 0;
 		while(itr.hasNext()) {
 			System.out.println("set " + count);
@@ -145,14 +151,14 @@ public class Knapsack {
 		}
 	}
 	
-	public void dunderhonung(){
-		for(int i = 0; i < subSets.size();i++){
+	public void selectBestSet(){
+		for(int i = 0; i < subSetList.size();i++){
 			
 			int sumSizes = 0;
 			int sumValue = 0;
 			
-			for(int j = 0; j < subSets.get(i).size(); j++){
-				Tuple tuple = subSets.get(i).get(j);
+			for(int j = 0; j < subSetList.get(i).size(); j++){
+				Tuple tuple = subSetList.get(i).get(j);
 				sumSizes += tuple.getSize();
 				sumValue += tuple.getValue();
 			}
@@ -170,12 +176,37 @@ public class Knapsack {
 
 	public void printBestSet(){
 		
-		if(subSets.get(bestSet).size() == 0){
-			System.out.println("chosen , value = 0");
+		if(subSetList.get(bestSet).size() == 0){
+			System.out.print("Chosen: ");
+			//System.out.println("Value: 0");
 		}
-		for(int k = 0; k < subSets.get(bestSet).size();k++){
-			System.out.println(subSets.get(bestSet).get(k).getSize() + "/" + subSets.get(bestSet).get(k).getValue());
+		System.out.print("Chosen: ");
+		for(int k = 0; k < subSetList.get(bestSet).size();k++){
+			System.out.print("(" + subSetList.get(bestSet).get(k).getSize() + "," + subSetList.get(bestSet).get(k).getValue() + "),");
 		}
-		System.out.println("Best value " + bestValue);
+		System.out.println("\nValue: " + bestValue);
+	}
+	
+	
+	/**
+	 * Tuple object consisting of its size and value
+	 *
+	 */
+	static class Tuple {
+
+		private int size;
+		private int value;
+		
+		public  Tuple(int size, int value){
+			this.size = size;
+			this.value = value; 
+		}
+		
+		public int getSize(){
+			return size;
+		}
+		public int getValue(){
+			return value;
+		}
 	}
 }
