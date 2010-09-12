@@ -1,14 +1,11 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.Character.Subset;
 import java.util.*;
 
 
-public class Knapsack {
-	
+public class Knapsack {	
 	private String fileName = "second.txt";
-	
 	private String fulltext = null;
 	private int capacity = 0;
 	private int bestValue = 0;
@@ -37,86 +34,6 @@ public class Knapsack {
 		knap.dunderhonung();
 	}
 	
-	public void dunderhonung(){
-		
-		
-		for(int i = 0; i < subSets.size();i++){
-			
-			int sumSizes = 0;
-			int sumValue = 0;
-			
-			for(int j = 0; j < subSets.get(i).size(); j++){
-				Tuple tuple = subSets.get(i).get(j);
-				sumSizes += tuple.getSize();
-				sumValue += tuple.getValue();
-			}
-			if(sumSizes <= capacity){
-				if(sumValue > bestValue){
-					//System.out.println("changing from "+ bestValue);
-					bestValue = sumValue;
-					//System.out.println("to "+ bestValue);
-					bestSet = i;
-				}
-			}
-		}
-		
-		printBestSet();
-
-	}
-
-	public void printBestSet(){
-		
-		if(subSets.get(bestSet).size() == 0){
-			System.out.println("chosen , value = 0");
-		}
-		for(int k = 0; k < subSets.get(bestSet).size();k++){
-			System.out.println(subSets.get(bestSet).get(k).getSize() + "/" + subSets.get(bestSet).get(k).getValue());
-		}
-		System.out.println("Best value " + bestValue);
-	}
-	
-	public void createPowerset(){
-		int elements = list.size();
-		long noSubSets = (long) Math.pow(2, elements);
-		
-		for(long i = 0; i < noSubSets; i++){
-			long elem = 1;
-			ArrayList<Tuple> tempList = new ArrayList<Tuple>(); 
-			
-			for(int j = 0; j < elements; j++){
-				long b = i & elem;
-//				System.out.println("elem = " + elem);
-//				System.out.println("i = " + i);
-//				System.out.println("i & elem " + b);
-				if((i & elem) != 0){
-					tempList.add(list.get(j));
-					System.out.println("loop add " + list.get(j));
-					
-				}
-				
-				elem = elem << 1;
-				
-			}
-			subSets.add(tempList);
-		}
-	}
-	
-	public void printSubsets(){
-		Iterator itr = subSets.iterator(); 
-		int count = 0;
-		while(itr.hasNext()) {
-			System.out.println("set " + count);
-			count++;
-			ArrayList temp = (ArrayList) itr.next();
-			Iterator itTemp = temp.iterator();
-			while(itTemp.hasNext()){
-				Tuple hej = (Tuple) itTemp.next();
-				System.out.println("\t" + hej.getSize() + " " + hej.getValue());
-			}
-		}
-
-	}
-	
 	/**
 	 * is reading the contents of a file
 	 * @throws IOException
@@ -133,7 +50,7 @@ public class Knapsack {
 					while(equaltock.hasMoreTokens()){
 						if(equaltock.countTokens() == 1){ //after comma
 							capacity = Integer.parseInt(equaltock.nextToken());
-							System.out.println(capacity);
+//							System.out.println(capacity);
 						}
 						else{
 							equaltock.nextToken(); //not interested in this one
@@ -157,20 +74,19 @@ public class Knapsack {
 				Tuple tuple = new Tuple(size, value);
 				System.out.println(tuple.getSize() + " " + tuple.getValue());
 				
-				list.add(tuple);
-								
+				list.add(tuple);							
 			}
 		}
 			file.close();
 		}
 			catch(IOException e){
-			System.out.println("epic fail");
+			System.out.println("Reading the file failed!");
 			}
 		}
 	
 	
 	/**
-	 * is for removing the paranteses from the input 
+	 * this function removes the paranteses from the input lines 
 	 * 
 	 */
 	public String removePar(String input){
@@ -184,5 +100,82 @@ public class Knapsack {
 			}
 		}
 		return result;		
+	}
+		
+	
+	/**
+	 * 
+	 *
+	 */
+	public void createPowerset(){
+		int elements = list.size();
+		long noSubSets = (long) Math.pow(2, elements); //saving 2^n elements in noSubSets
+		
+		for(long i = 0; i < noSubSets; i++){ 
+			long elem = 1;
+			ArrayList<Tuple> tempList = new ArrayList<Tuple>(); 
+			
+			for(int j = 0; j < elements; j++){ // as long as j is less than the number of tuples in the list
+//				long b = i & elem;
+//				System.out.println("elem = " + elem);
+//				System.out.println("i = " + i);
+//				System.out.println("i & elem " + b);
+				if((i & elem) != 0){//Bit masking: performs logical "bitwise-and" operation 
+					tempList.add(list.get(j));
+					System.out.println("loop add " + list.get(j));
+				}
+				elem = elem << 1; //Bit shifting to the left by 1
+			}
+			subSets.add(tempList);
+		}
+	}
+	
+	public void printSubsets(){
+		Iterator itr = subSets.iterator(); 
+		int count = 0;
+		while(itr.hasNext()) {
+			System.out.println("set " + count);
+			count++;
+			ArrayList temp = (ArrayList) itr.next();
+			Iterator itTemp = temp.iterator();
+			while(itTemp.hasNext()){
+				Tuple hej = (Tuple) itTemp.next();
+				System.out.println("\t" + hej.getSize() + " " + hej.getValue());
+			}
+		}
+	}
+	
+	public void dunderhonung(){
+		for(int i = 0; i < subSets.size();i++){
+			
+			int sumSizes = 0;
+			int sumValue = 0;
+			
+			for(int j = 0; j < subSets.get(i).size(); j++){
+				Tuple tuple = subSets.get(i).get(j);
+				sumSizes += tuple.getSize();
+				sumValue += tuple.getValue();
+			}
+			if(sumSizes <= capacity){
+				if(sumValue > bestValue){
+					//System.out.println("changing from "+ bestValue);
+					bestValue = sumValue;
+					//System.out.println("to "+ bestValue);
+					bestSet = i;
+				}
+			}
+		}
+		printBestSet();
+	}
+
+	public void printBestSet(){
+		
+		if(subSets.get(bestSet).size() == 0){
+			System.out.println("chosen , value = 0");
+		}
+		for(int k = 0; k < subSets.get(bestSet).size();k++){
+			System.out.println(subSets.get(bestSet).get(k).getSize() + "/" + subSets.get(bestSet).get(k).getValue());
+		}
+		System.out.println("Best value " + bestValue);
 	}
 }
