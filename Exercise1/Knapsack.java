@@ -11,7 +11,7 @@ import java.util.*;
  *
  */
 public class Knapsack {	
-	private String fileName = "second.txt";
+	private String fileName = null;
 	private String fulltext = null;
 	private int capacity = 0;
 	private int bestValue = 0;
@@ -22,7 +22,8 @@ public class Knapsack {
 	/**
 	 * Constructor
 	 */
-	public Knapsack(){
+	public Knapsack(String fileName){
+		this.fileName = fileName;
 		inputList = new ArrayList<Tuple>();
 		subSetList = new ArrayList<ArrayList<Tuple>>();
 	}
@@ -33,7 +34,11 @@ public class Knapsack {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-		Knapsack knap = new Knapsack();
+		String file = "third.txt";
+		if(args.length > 0){
+			file = args[0];
+		}
+		Knapsack knap = new Knapsack(file);
 		knap.readFile();
 		knap.createPowerset();
 		knap.printSubsets();
@@ -56,7 +61,6 @@ public class Knapsack {
 					while(equaltock.hasMoreTokens()){
 						if(equaltock.countTokens() == 1){ //after comma
 							capacity = Integer.parseInt(equaltock.nextToken());
-//							System.out.println(capacity);
 						}
 						else{
 							equaltock.nextToken(); //not interested in this one
@@ -110,7 +114,7 @@ public class Knapsack {
 		
 	
 	/**
-	 * 
+	 * Creates all possible subsets from the inputList
 	 *
 	 */
 	public void createPowerset(){
@@ -123,12 +127,8 @@ public class Knapsack {
 			
 			for(int j = 0; j < inputSize; j++){ // as long as j is less than the number of tuples in the list
 				long b = i & elementToInclude;
-//				System.out.println("elem = " + elementToInclude);
-//				System.out.println("i = " + i);
-//				System.out.println("i & elem " + b); 
 				if((i & elementToInclude) != 0){//Bit masking: performs logical "bitwise-and" operation 
 					tempList.add(inputList.get(j));
-//					System.out.println("loop add " + inputList.get(j));
 				}
 				elementToInclude = elementToInclude << 1; //Bit shifting to the left by 1
 			}
@@ -136,6 +136,10 @@ public class Knapsack {
 		}
 	}
 	
+	
+	/**
+	 * only for testing to print out all subsets
+	 */
 	public void printSubsets(){
 		Iterator itr = subSetList.iterator(); 
 		int count = 0;
@@ -164,9 +168,7 @@ public class Knapsack {
 			}
 			if(sumSizes <= capacity){
 				if(sumValue > bestValue){
-					//System.out.println("changing from "+ bestValue);
 					bestValue = sumValue;
-					//System.out.println("to "+ bestValue);
 					bestSet = i;
 				}
 			}
@@ -178,7 +180,6 @@ public class Knapsack {
 		
 		if(subSetList.get(bestSet).size() == 0){
 			System.out.print("Chosen: ");
-			//System.out.println("Value: 0");
 		}
 		System.out.print("Chosen: ");
 		for(int k = 0; k < subSetList.get(bestSet).size();k++){
