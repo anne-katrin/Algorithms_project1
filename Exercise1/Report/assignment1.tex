@@ -14,8 +14,6 @@
 \usepackage[pdftex]{graphicx}
 
 
-
-
 \begin{document}
 
 \section*{Chapter 1:  Explanation of the Algorithm} 
@@ -23,14 +21,9 @@
 
 \begin{figure}[h!]
   \centering
-    
       \includegraphics[width=0.5\textwidth]{Knapsack.png}
-  \caption{An illustration of the Knapsack problem!}
+  \caption{An illustration of the Knapsack problem! \textbf{ADD REF HERE} }
 \end{figure}
-
-
-
-
 
 \textbf{Elementary operation:} We are counting the number of objects that are in the input file defined as n, and the number of possible subsets which can be created from them ($2^n$), defined as m.\\
 
@@ -41,15 +34,34 @@ For \= all the objects in the input file \\
 \> select the best subset with the highest value\\
 \end{tabbing}
 
-The algorithm exists of three parts. First when reading the input file each of these objects is put into a Tuple which has a size and a value. Secondly, the algorithm creates all possible subsets of the input Tuples, and the third step of the algorithm is to select the best subset, which is desirably equal to the capacity of the knapsack and has the highest value. \\
+After reading the input file and putting each of these objects into a Tuple which has a size and a value, the Algorithm exists of two parts. First of all, the algorithm creates all possible subsets of the input Tuples, and second of all it selects the best subset, which is desirably equal to the capacity of the knapsack and has the highest value. \\
  
 
-
 \section*{Chapter 2: Algorithm in Pseudocode}
+In this chapter the algorithm will be explained in more detail. The following is the pseudocode for the function "createPowerset()". \newline
 
-\noindent The following is the pseudocode for the function "createPowerset()". \newline
-%just to show how to write this in latex
-for i $\rightarrow 2^n$
+\begin{verbatim}
+n = Size of the tuple list 
+m = Size of possible subsets 2^n
+  for i ->  m loop
+    element = 1  
+    create temporary arraylist  
+      for j -> n loop
+         if ((j & element) Not 0){
+           add tuple to temorary arraylist
+         }
+         element = element << 1
+      }
+      add subset to list
+  }
+ 
+\end{verbatim}
+
+\begin{tabbing}
+ 
+\end{tabbing}
+
+
 
 
 %Before creating sets, the program reads the input file which specifies a certain amount of items, each item is put into a Tuple, which has a size and a value. The tuple is then saved in an ArrayList. As a next step the algorithm creates a power set, where the possible number of tuple combinations are $2^n$. Through bit masking and the logical bitwise "and" operator, it is checked if the corresponding bits are both 1, in which case the current tuple is saved in a temporary array list and with help of the shift left operator $<<$ the element is shifted one step to the left. 
