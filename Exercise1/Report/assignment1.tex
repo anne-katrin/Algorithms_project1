@@ -48,7 +48,7 @@ for i = 1 to  m loop
   element = 1  
   create temporary arraylist  
     for j = 1 to n loop
-       if (j "bitwise and" element is not 0)
+       if (i "bitwise and" element is not 0)
          add tuple to temporary arraylist
        end if
        element = element << 1
@@ -58,7 +58,7 @@ end for
  
 \end{verbatim}
 
-\noindent This function creates a power set[reference], which is a set of all possible subsets of the set. We know that the power set will have $2^n$ elements. Through bit masking and the logical bitwise "and" operator, it is checked if the corresponding bits are both 1, in which case the current tuple is saved in a temporary array list and with help of the shift left operator $<<$ the element is shifted one step to the left. The final step is to add the resulting subset to the list of subsets. \\ \\ 
+\noindent This function creates a power set[reference], which is a set of all possible subsets of the set. It is known that the power set will have $2^n$ subsets. Through bit masking and the logical bitwise "and" operator, it is checked if the corresponding bits are both 1, in which case the current tuple is saved in a temporary array list and with help of the shift left operator $<<$ the element is shifted one step to the left. The final step is to add the resulting subset to the list of subsets. \\ \\ 
 
 The second part of the algorithm is to select the best possible subset and is shown in the pseudocode below,\\
 
