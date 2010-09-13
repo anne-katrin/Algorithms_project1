@@ -12,7 +12,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage[pdftex]{graphicx}
-
+\usepackage{multirow}
 
 \begin{document}
 
@@ -104,6 +104,21 @@ end for
 \section*{Chapter 4: Complexity Analysis}
 
 \section*{Chapter 5: Performance Test}
+
+The time for each test is measured in milliseconds. The tests were done by using java.lang.System.currentTimeMillis() to get one start time as the first thing done in the createPowerset method in the algorithm, and one stop time at the second last line (before calling the printBestSet method) in selectBestSet. The resulting execution time was calculated by subtrackting the the start time from the stop time to get a result of how long the algorithm was executing with the different input files.\\
+
+\begin{tabular}{|l|l|l|} \hline
+Items &Capacity &Execution time\\ \hline
+\multirow{3}{*}{10} & 6 & 11 \\
+& 20 & 11 \\
+& 35 & 10 \\ \hline
+\multirow{3}{*}{15} & 6 & 57 \\
+& 20 & 61 \\
+& 35 & 59 \\ \hline
+\multirow{3}{*}{20} & 6 & 1460 \\
+& 20 & 1447 \\
+& 35 & 1445 \\ \hline
+\end{tabular}
 
 \section*{Appendix 1: Compile and run program}
 \noindent Compile the program with 'javac Knapsack.java'\\ 
