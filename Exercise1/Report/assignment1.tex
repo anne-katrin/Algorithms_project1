@@ -88,15 +88,7 @@ for i = 1 to k loop
 end for
 \end{verbatim}
 
-
-\begin{tabbing}
- 
-\end{tabbing}
-
-
-
-
-%Before creating sets, the program reads the input file which specifies a certain amount of items, each item is put into a Tuple, which has a size and a value. The tuple is then saved in an ArrayList. As a next step the algorithm creates a power set, where the possible number of tuple combinations are $2^n$. Through bit masking and the logical bitwise "and" operator, it is checked if the corresponding bits are both 1, in which case the current tuple is saved in a temporary array list and with help of the shift left operator $<<$ the element is shifted one step to the left. 
+\noindent This function chooses the best possible subset for the Knapsack problem. The function loops through all created subsets and adds up all sizes and values of the tuples in that subset. It then checks if the sum of the sizes is less or equal to the capacity of the Knapsack and if it is it will set the sum of the values of this subset as the best value. Also it will set this subset at the best set until there is found a subset with better fitting size and value.\\
 
 
 \section*{Chapter 3: Correctness Justification}
