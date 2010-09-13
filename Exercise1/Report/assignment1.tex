@@ -64,10 +64,29 @@ m = Size of possible subsets 2^n
 The second part of the algorithm is to select the best possible subset and is shown in the pseudocode below,\\
 
 \begin{verbatim}
-k = List containing all possible subsets
+k = Size of list containing all possible subsets
+capacity = the capacity of the knapsack
+bestValue = the best value of all subsets
+bestSet = the set that gives bestValue
 
-for   
+for i = 1 to k loop
 
+  sumSizes = 0
+  sumValue = 0
+
+  for j = 1 to size of subset i loop
+    tuple = tuple j from subset i
+    add the size of the tuple to sumSizes and store in sumSizes
+    add the value of the tuple to sumValue and store in sumValue
+  end for
+
+  if (sumSizes is less than or equal to the capacity){
+    if(sumValue is greater than bestValue){
+      store sumValue as bestValue
+      store set i as bestSet
+    }
+   }
+end for
 \end{verbatim}
 
 
