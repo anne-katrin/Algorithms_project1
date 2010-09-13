@@ -43,17 +43,18 @@ In this chapter the algorithm will be explained in more detail. The following is
 \begin{verbatim}
 n = Size of the tuple list 	
 m = Size of possible subsets 2^n
-  for i = 1 to  m loop
-    element = 1  
-    create temporary arraylist  
-      for j = 1 to n loop
-         if (j "bitwise and" element is not 0)
-           add tuple to temporary arraylist
-         end if
-         element = element << 1
-      end for
-      add subset to list
-  end for
+
+for i = 1 to  m loop
+  element = 1  
+  create temporary arraylist  
+    for j = 1 to n loop
+       if (j "bitwise and" element is not 0)
+         add tuple to temporary arraylist
+       end if
+       element = element << 1
+    end for
+    add subset to list
+end for
  
 \end{verbatim}
 
@@ -80,12 +81,12 @@ for i = 1 to k loop
     add the value of the tuple to sumValue and store in sumValue
   end for
 
-  if (sumSizes is less than or equal to the capacity){
-    if(sumValue is greater than bestValue){
+  if (sumSizes is less than or equal to the capacity)
+    if(sumValue is greater than bestValue)
       store sumValue as bestValue
       store set i as bestSet
-    }
-   }
+    end if
+  end if
 end for
 \end{verbatim}
 
