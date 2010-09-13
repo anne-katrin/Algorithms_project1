@@ -34,7 +34,7 @@ For \= all the objects in the input file \\
 \> select the best subset with the highest value\\
 \end{tabbing}
 
-After reading the input file and putting each of these objects into a Tuple which has a size and a value, the Algorithm exists of two parts. First of all, the algorithm creates all possible subsets of the input Tuples, and second of all it selects the best subset, which is desirably equal to the capacity of the knapsack and has the highest value. \\
+After reading the input file and putting each of these objects into a Tuple which has a size and a value, the Algorithm exists of two parts. First of all, the algorithm creates all possible subsets of the input Tuples, and second of all it selects the first subset which has a size less or equal to the capacity of the knapsack and has the highest value.\\
  
 
 \section*{Chapter 2: Algorithm in Pseudocode}
@@ -47,16 +47,20 @@ m = Size of possible subsets 2^n
     element = 1  
     create temporary arraylist  
       for j = 1 to n loop
-         if (j "bitwise and" element is not 0){
+         if (j "bitwise and" element is not 0)
            add tuple to temporary arraylist
-         }
+         end if
          element = element << 1
-      }
+      end for
       add subset to list
-  }
+  end for
  
 \end{verbatim}
 
+\noindent This function creates all possible subsets 
+
+
+%Before creating sets, the program reads the input file which specifies a certain amount of items, each item is put into a Tuple, which has a size and a value. The tuple is then saved in an ArrayList. As a next step the algorithm creates a power set, where the possible number of tuple combinations are $2^n$. Through bit masking and the logical bitwise "and" operator, it is checked if the corresponding bits are both 1, in which case the current tuple is saved in a temporary array list and with help of the shift left operator $<<$ the element is shifted one step to the left. 
 The second part of the algorithm is to select the best possible subset and is shown in the pseudocode below,\\
 
 \begin{verbatim}
