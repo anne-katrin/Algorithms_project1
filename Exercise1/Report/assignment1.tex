@@ -43,12 +43,12 @@ In this chapter the algorithm will be explained in more detail. The following is
 \begin{verbatim}
 n = Size of the tuple list 	
 m = Size of possible subsets 2^n
-  for i ->  m loop
+  for i = 1 to  m loop
     element = 1  
     create temporary arraylist  
-      for j -> n loop
-         if ((j & element) Not 0){
-           add tuple to temorary arraylist
+      for j = 1 to n loop
+         if (j "bitwise and" element is not 0){
+           add tuple to temporary arraylist
          }
          element = element << 1
       }
@@ -56,6 +56,16 @@ m = Size of possible subsets 2^n
   }
  
 \end{verbatim}
+
+The second part of the algorithm is to select the best possible subset and is shown in the pseudocode below,\\
+
+\begin{verbatim}
+k = List containing all possible subsets
+
+for   
+
+\end{verbatim}
+
 
 \begin{tabbing}
  
