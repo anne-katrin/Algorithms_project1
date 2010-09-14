@@ -44,10 +44,10 @@ In this chapter the algorithm will be explained in more detail. The following is
 n = Size of the tuple list 	
 m = Size of possible subsets 2^n
 
-for i = 1 to  m loop
+for i = 0 to  m-1 loop
   element = 1  
   create temporary arraylist  
-    for j = 1 to n loop
+    for j = 0 to n-1 loop
        if (i "bitwise and" element is not 0)
          add tuple to temporary arraylist
        end if
