@@ -96,7 +96,7 @@ end for
 
 \section{Correctness Justification}
 
-\textbf{add ref to course book}
+The correctness of the algorithm is justified in two seperate sections, one for each part of the algorithm. For this the course litterature has been used for viewing examples of proofs \citep{Tardos}.
 
 \subsection{Create powerset}
 For the set $S = \{a,b,c\}$ a correct power set for S is $P = \{\{\},\{a\},\{b\},\{c\},\{a,b\},\{a,c\},\{b,c\},\{a,b,c\}$.
@@ -117,68 +117,89 @@ Letting the binary code for $i = 0$ to $2^n-1$ represent each possible subset, w
 
 \section{Complexity Analysis}
 
-Powerset analysis \\
+The sums of the complexity of the knapsack problem are set up individually for the create power set and the select best set parts of the algorithms and are then calculated by adding them togheter.
 
-\begin{verbatimtab}[4]
-1		n = Size of the tuple list (input)
-1		m = Size of possible subsets 2^n
+\textbf{Elementary operation} is the same for the two parts of the algorithm. Assignment, if statements, adding elements to the end of arraylist and lookup in an arraylist are seen as elementary operations. In the pseudocode below for the two parts the number to the left indicate the complexity for each line of code.
+
+\subsection{Create Power set}
+
+\begin{lstlisting}
+1			n = Size of the tuple list (input)
+1			m = Size of possible subsets 2^n
 
 
-2^n		for i = 0 to m-1 loop	
-1			element = 1	
-1			create temporary arraylist
+2^n			for i = 0 to m-1 loop	
+1				element = 1	
+1				create temporary arraylist
 	  
-n			for j = 0 to n-1 loop	
-1				if (i "bitwise and" element is not 0)
-1					add tuple to temporary arraylist
-				end if
-1				element = element << 1
-			end for
+n				for j = 0 to n-1 loop	
+1					if (i "bitwise and" element is not 0)
+1						add tuple to temporary arraylist
+				  end if
+1					element = element << 1
+			  end for\begin{align}
 	
-1		add subset to list
-		end for
-\end{verbatimtab}
+1			add subset to list
+			end for
+\end{lstlisting}
 
 \begin{equation}
-\sum^{2^n}_{i =1}3\sum^n_{j=1}3= 
-\sum^{2^n}_{i =1}3(n-1+3) = 
-\sum^{2^n}_{i =1}3(n+2) = 
-(2^n-1+3)*(n+2) \in O(2n^n)
+\sum^{2^n}_{i =1}3\sum^n_{j=1}3%= 
+%\sum^{2^n}_{i =1}3(n-1+3) = 
+%\sum^{2^n}_{i =1}3(n+2) = 
+%(2^n-1+3)*(n+2) \in O(2n^n)
 \end{equation}
 
 
-BestValue algorithm part\\
+\subsection{Select best set}
 
-\begin{verbatimtab}[4]
-1		k = Size of list containing all possible subsets
-1		capacity = the capacity of the knapsack
-1		bestValue = the best value of all subsets (intiated to 0)
-1		bestSet = the set that gives bestValue
+\begin{lstlisting}
+1			k = Size of list containing all possible subsets
+1			capacity = the capacity of the knapsack
+1			bestValue = the best value of all subsets (intiated to 0)
+1			bestSet = the set that gives bestValue
 
-2^n		for i = 1 to k loop
+2^n			for i = 1 to k loop
 
-1			sumSizes = 0
-1			sumValue = 0
+1				sumSizes = 0
+1				sumValue = 0
 
-<=n			for j = 1 to size of subset i loop
-1				store tuple j from subset i in tuple t
-1				add the size of the tuple t to sumSizes and store in sumSizes
-1				add the value of the tuple t to sumValue and store in sumValue
-			end for
+<=n				for j = 1 to size of subset i loop
+1					store tuple j from subset i in tuple t
+1					add the size of the tuple t to sumSizes and store in sumSizes
+1					add the value of the tuple t to sumValue and store in sumValue
+			  end for
 
-1			if (sumSizes is less than or equal to the capacity)
-1				if(sumValue is greater than bestValue)
-1					store sumValue as bestValue
-1					store set i as bestSet
+1				if (sumSizes is less than or equal to the capacity)
+1					if(sumValue is greater than bestValue)
+1						store sumValue as bestValue
+1						store set i as bestSet
+					end if
 				end if
-			end if
-		end for
-\end{verbatimtab}
+			end for
+\end{lstlisting}
 
 
 \begin{equation}
 \sum^{2^n}_{i=1}(6)\sum^n_{j=1}(3)
 \end{equation}
+
+\subsection{Complexity of knapsack exhaustive search}
+
+The calculation below is the sum of the set up of the create power set function and the select best set function.
+
+\begin{equation}
+\begin{split}
+\sum^{2^n}_{i =1}3\sum^n_{j=1}3+\sum^{2^n}_{k=1}(6)\sum^n_{l=1}(3)= \\
+\sum^{2^n}_{i =1}3(n-1+3) + \sum^{2^n}_{k =1}6(n-1+3) =  \\
+\sum^{2^n}_{i =1}3(n+2) + \sum^{2^n}_{k =1}6(n+2) = \\
+(2^n-1+3)*(n+2) + (2^n-1+6)*(n+2) = \\
+(2^n+2)*(n+2) + (2^n+5)*(n+2) \in O(2^n*n)
+\end{split}
+\end{equation}
+
+The result gives an upper bound by $O(2^n*n)$
+
 
 
 \section{Performance Test}
@@ -202,12 +223,6 @@ Items &Capacity &Execution time\\ \hline
 \section{Compile and run program}
 \noindent Compile the program with 'javac Knapsack.java'\\ 
 \noindent Run the compiled program with 'java Knapsack ``inputfile.txt''' where inputfile is the name of the input file. If no input file is provided, the instance 3 input file given in the problem is used as default. 
-
-\section{References}
-%Add referens for wiki pic
-
-%add ref for the idea to use bitmasking http://www.mathsisfun.com/sets/power-set.html
-
 
 % References define a context
 \bibliographystyle{apalike} %apalike, abbrv, acm, alpha, apalike, ieeetr, plain,
