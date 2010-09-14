@@ -173,7 +173,6 @@ public class Knapsack {
 		System.out.println("\nValue: " + bestValue);
 	}
 	
-	
 	/**
 	 * Tuple object consisting of its size and value
 	 *
