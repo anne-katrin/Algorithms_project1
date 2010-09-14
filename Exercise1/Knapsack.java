@@ -6,6 +6,8 @@ import java.util.*;
 /**
  * Lab 1: an exhaustive search for the knapsack problem.
  * 
+ * Group: 25
+ * 
  * @author Anne-Katrin Krolovitsch 
  * @author Linda Nilsson
  *
@@ -38,10 +40,9 @@ public class Knapsack {
 		if(args.length > 0){
 			file = args[0];
 		}
-		Knapsack knap = new Knapsack(file);
+		Knapsack knap = new Knapsack(file.trim());
 		knap.readFile();
 		knap.createPowerset();
-		knap.printSubsets();
 		knap.selectBestSet();
 	}
 	
@@ -82,7 +83,6 @@ public class Knapsack {
 					}
 				}
 				Tuple tuple = new Tuple(size, value);
-				System.out.println(tuple.getSize() + " " + tuple.getValue());
 				
 				inputList.add(tuple);							
 			}
@@ -96,7 +96,7 @@ public class Knapsack {
 	
 	
 	/**
-	 * this function removes the paranteses from the input lines 
+	 * this function removes the parenthesis from the input lines 
 	 * 
 	 */
 	public String removePar(String input){
@@ -120,13 +120,11 @@ public class Knapsack {
 	public void createPowerset(){
 		int inputSize = inputList.size();
 		long subSetsSize = (long) Math.pow(2, inputSize); //the number of possible subsets 2^n
-		
 		for(long i = 0; i < subSetsSize; i++){ 
 			long elementToInclude = 1;
 			ArrayList<Tuple> tempList = new ArrayList<Tuple>(); 
 			
 			for(int j = 0; j < inputSize; j++){ // as long as j is less than the number of tuples in the list
-				long b = i & elementToInclude;
 				if((i & elementToInclude) != 0){//Bit masking: performs logical "bitwise-and" operation 
 					tempList.add(inputList.get(j));
 				}
@@ -136,25 +134,9 @@ public class Knapsack {
 		}
 	}
 	
-	
 	/**
-	 * only for testing to print out all subsets
+	 * Selects the first subset which fits in the knapsack and also gives the highest value.
 	 */
-	public void printSubsets(){
-		Iterator itr = subSetList.iterator(); 
-		int count = 0;
-		while(itr.hasNext()) {
-			System.out.println("set " + count);
-			count++;
-			ArrayList temp = (ArrayList) itr.next();
-			Iterator itTemp = temp.iterator();
-			while(itTemp.hasNext()){
-				Tuple hej = (Tuple) itTemp.next();
-				System.out.println("\t" + hej.getSize() + " " + hej.getValue());
-			}
-		}
-	}
-	
 	public void selectBestSet(){
 		for(int i = 0; i < subSetList.size();i++){
 			
@@ -176,6 +158,9 @@ public class Knapsack {
 		printBestSet();
 	}
 
+	/**
+	 * prints the selected best subset and the best value
+	 */
 	public void printBestSet(){
 		
 		if(subSetList.get(bestSet).size() == 0){
