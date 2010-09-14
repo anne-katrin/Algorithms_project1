@@ -5,6 +5,7 @@
 
 \usepackage{multirow}
 \usepackage{moreverb}
+\usepackage{url}
 
 \pdfsubject{}
 \keywords{}
@@ -24,7 +25,7 @@ Linda Nilsson \\ 840703-4860 \\ \mail{nilind@ituniv.se}\\ \tabularnewline
 \begin{figure}[h!]
   \centering
       \includegraphics[width=0.5\textwidth]{Knapsack.png}
-  \caption{An illustration of the Knapsack problem! \textbf{ADD REF HERE} }
+  \caption{An illustration of the Knapsack problem! \citep{wikipic} }
 \end{figure}
 
 
@@ -38,7 +39,7 @@ For \= all the objects in the input file \\
 \> select the best subset from the power set with the highest value\\
 \end{tabbing}
 
-After reading the input file and putting each of these objects into a Tuple which has a size and a value, the algorithm consists of two parts. First of all, the algorithm creates a power set (all possible subsets plus the set itself, see [reference]) of the input Tuples, and second of all it selects the first subset which has a size less or equal to the capacity of the knapsack and has the highest value.\\
+After reading the input file and putting each of these objects into a Tuple which has a size and a value, the algorithm consists of two parts. First of all, the algorithm creates a power set (all possible subsets plus the set itself, see \citep{Gersting}) of the input Tuples, and second of all it selects the first subset which has a size less or equal to the capacity of the knapsack and has the highest value.\\
  
 
 \section{Algorithm in Pseudocode}
@@ -61,7 +62,7 @@ for i = 0 to  m-1 loop
 end for
 \end{lstlisting}
 
-\noindent This function creates a power set, which is a set of all possible subsets of the set and the set itself. It is known that the power set will have $2^n$ subsets. Through bit masking with the bitwise "and" operator and letting i = 1 to m represent all possible subsets, it is checked if the corresponding bits are both 1, in which case the current tuple is saved in a temporary array list. Using the shift left operator $<<$ the element is shifted one step to the left before next iteration to enable checking if the next element is part of the current subset. The final step before next iteration is to add the resulting subset to the list of subsets. Inspiration to the binary solution was taken from [reference], section ``It's Binary``. \\ \\ 
+\noindent This function creates a power set, which is a set of all possible subsets of the set and the set itself. It is known that the power set will have $2^n$ subsets. Through bit masking with the bitwise "and" operator and letting i = 1 to m represent all possible subsets, it is checked if the corresponding bits are both 1, in which case the current tuple is saved in a temporary array list. Using the shift left operator $<<$ the element is shifted one step to the left before next iteration to enable checking if the next element is part of the current subset. The final step before next iteration is to add the resulting subset to the list of subsets. Inspiration to the binary solution was taken from \citep{powerset}, section ``It's Binary``. \\ \\ 
 
 The second part of the algorithm is to select the best possible subset and is shown in the pseudocode for function ``selectBestSet()``.\\
 
@@ -95,10 +96,12 @@ end for
 
 \section{Correctness Justification}
 
-\subsection{Create powerset}
-For the set $S = \{a,b,c\}$ a correct power set for S would be $P = \{\{\},\{a\},\{b\},\{c\},\{a,b\},\{a,c\},\{b,c\},\{a,b,c\}$.
+\textbf{add ref to course book}
 
-The createPowerset part of the algorithm has to make sure each of subset in set $P$ is created. 
+\subsection{Create powerset}
+For the set $S = \{a,b,c\}$ a correct power set for S is $P = \{\{\},\{a\},\{b\},\{c\},\{a,b\},\{a,c\},\{b,c\},\{a,b,c\}$.
+
+The createPowerset part of the algorithm has to make sure that each of the subsets in set $P$ are created. 
 
 To do this, $n$ is defined as the number of elements in set $S$. In an execution of the algorithm the elements in $S$ would consist of tuples with a weight and size but here the tuples are represented by label $a,b$ and $c$.
 
@@ -108,7 +111,7 @@ The power set will have $2^n$ subset as shown in set $P$.\\\\
 
 Assume that the createPowerset part of the algoritm does not produce set $P$ when given the input of set $S$.
 
-Letting the binary code for $i = 0$ to $2^n-1$ represent each possible subset, where a one in the binary code for $i$ means that the element from set $S$ at place where the one is placed will be included and a zero means the element is not included. For example, when $i = 5$ the binary code is 101 and the algorithm would include element $a$ and $c$ from the set $S$. By letting $element$ represent the placement of the element in set $S$ and setting $element = 1$, using a ''bitwise and'' compairison between $i$ \& $element$ where the result is $\neq0$ the element from set $S$ at place $element$ would be included in the subset. Since the algorithm for each $i$ iterates $n$ times, shifting the bit set to one in $element$ one step to the left compairing each binary code of $i = 0$ to $2^n-1$ with each element in set $S$ (represented by $elements$). Each possible subset will be created. A contradiction to our original assumption.
+Letting the binary code for $i = 0$ to $2^n-1$ represent each possible subset, where a one in the binary code of $i$ means that the element from set $S$ at the place where the one is placed will be included and a zero means the element will not be included. For example, when $i = 5$ the binary code is 101 and the algorithm would include element $a$ and $c$ from the set $S$. By letting $element$ represent the placement of the element in set $S$ and setting $element = 1$, using a ''bitwise and'' compairison between $i$ \& $element$ where the result is $\neq0$ the element from set $S$ at place $element$ would be included in the subset. Since the algorithm for each $i$ iterates $n$ times, shifting the bit set to one in $element$ one step to the left compairing each binary code of $i = 0$ to $2^n-1$ with each element in set $S$ (represented by $elements$). Each possible subset will be created. A contradiction to our original assumption.
 
 \subsection{Select best set}
 
@@ -207,8 +210,8 @@ Items &Capacity &Execution time\\ \hline
 
 
 % References define a context
-%\bibliographystyle{apalike} %apalike, abbrv, acm, alpha, apalike, ieeetr, plain,
+\bibliographystyle{apalike} %apalike, abbrv, acm, alpha, apalike, ieeetr, plain,
 %siam,unsrt
-%\bibliography{report}
+\bibliography{ref}
 %\printindex
 \end{document}
