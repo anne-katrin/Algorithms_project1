@@ -115,6 +115,16 @@ Letting the binary code for $i = 0$ to $2^n-1$ represent each possible subset, w
 
 \subsection{Select best set}
 
+Proof: stay ahead 
+
+Optimal set:  O=\{i1, i2, ... im\} (NOTE: the 1, 2 and m should be on the bottom of the i)\\
+Greedy set :  A=\{j1, j2, ... jk\} (NOTE: the 1, 2 and k should be on the bottom of the j)\\
+
+each i and each j consist of a size and a value \\
+
+Claim = (the sum of the values of) jk >= (the sum of the values of) im
+
+
 \section{Complexity Analysis}
 
 The sums of the complexity of the knapsack problem are set up individually for the create power set and the select best set parts of the algorithms and are then calculated by adding them togheter.
