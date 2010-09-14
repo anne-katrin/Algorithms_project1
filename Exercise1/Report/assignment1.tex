@@ -96,13 +96,19 @@ end for
 \section{Correctness Justification}
 
 \subsection{Create powerset}
+For the set $S = \{a,b,c\}$ a correct power set for S would be $P = \{\{\},\{a\},\{b\},\{c\},\{a,b\},\{a,c\},\{b,c\},\{a,b,c\}$.
 
-For the set S = \{a,b\} a correct power set for S would be P = $\{\{\},\{a\},\{b\},\{a,b\}\}$.
+The createPowerset part of the algorithm has to make sure each of subset in set $P$ is created. 
 
-Assume that an execution of "createPowerset()"
+To do this, $n$ is defined as the number of elements in set $S$. In an execution of the algorithm the elements in $S$ would consist of tuples with a weight and size but here the tuples are represented by label $a,b$ and $c$.
 
+The power set will have $2^n$ subset as shown in set $P$.\\\\
 
-Proof of correctness for creating powerset
+\textbf{Proof by contradiction}
+
+Assume that the createPowerset part of the algoritm does not produce set $P$ when given the input of set $S$.
+
+Letting the binary code for $i = 0$ to $2^n-1$ represent each possible subset, where a one in the binary code for $i$ means that the element from set $S$ at place where the one is placed will be included and a zero means the element is not included. For example, when $i = 5$ the binary code is 101 and the algorithm would include element $a$ and $c$ from the set $S$. By letting $element$ represent the placement of the element in set $S$ and setting $element = 1$, using a ''bitwise and'' compairison between $i$ \& $element$ where the result is $\neq0$ the element from set $S$ at place $element$ would be included in the subset. Since the algorithm for each $i$ iterates $n$ times, shifting the bit set to one in $element$ one step to the left compairing each binary code of $i = 0$ to $2^n-1$ with each element in set $S$ (represented by $elements$). Each possible subset will be created. A contradiction to our original assumption.
 
 \subsection{Select best set}
 
