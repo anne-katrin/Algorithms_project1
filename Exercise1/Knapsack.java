@@ -125,7 +125,7 @@ public class Knapsack {
 			ArrayList<Tuple> tempList = new ArrayList<Tuple>(); 
 			
 			for(int j = 0; j < inputSize; j++){ // as long as j is less than the number of tuples in the list
-				if((i & elementToInclude) != 0){//Bit masking: performs logical "bitwise-and" operation 
+				if((i & elementToInclude) != 0){//Bit masking: performs "bitwise-and" operation 
 					tempList.add(inputList.get(j));
 				}
 				elementToInclude = elementToInclude << 1; //Bit shifting to the left by 1
