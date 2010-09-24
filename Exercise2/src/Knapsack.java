@@ -15,11 +15,10 @@ import java.util.*;
 public class Knapsack {	
 	private String fileName = null;
 	private String fulltext = null;
-	private int capacity = 0;
-	private int bestValue = 0;
-	private int bestSet = 0;
+	private int W = 0;
+
 	private ArrayList<Tuple> inputList; 
-	private ArrayList<ArrayList<Tuple>> subSetList;
+
 	
 	/**
 	 * Constructor
@@ -27,8 +26,8 @@ public class Knapsack {
 	public Knapsack(String fileName){
 		this.fileName = fileName;
 		inputList = new ArrayList<Tuple>();
-		subSetList = new ArrayList<ArrayList<Tuple>>();
 	}
+	
 	
 	/**
 	 * Main function 
@@ -42,9 +41,12 @@ public class Knapsack {
 		}
 		Knapsack knap = new Knapsack(file.trim());
 		knap.readFile();
-		knap.createPowerset();
+		//knap.createPowerset();
+		int[][] Mem = knap.dynamicKnapsack();
+		knap.printmem(Mem);
 	}
 	
+
 	/**
 	 * is reading the contents of a file
 	 * @throws IOException
@@ -60,7 +62,7 @@ public class Knapsack {
 					StringTokenizer equaltock = new StringTokenizer(fulltext, "=");
 					while(equaltock.hasMoreTokens()){
 						if(equaltock.countTokens() == 1){ //after comma
-							capacity = Integer.parseInt(equaltock.nextToken());
+							W = Integer.parseInt(equaltock.nextToken());
 						}
 						else{
 							equaltock.nextToken(); //not interested in this one
@@ -111,43 +113,77 @@ public class Knapsack {
 		return result;		
 	}
 		
+//	Input: n, W, w1,...,wN, v1,...,vN
+//	for w = 0 to W
+//		M[0, w] = 0
 	
-	/**
-	 * Creates all possible subsets from the inputList
-	 *
-	 */
-	public void createPowerset(){
-		int inputSize = inputList.size();
-		long subSetsSize = (long) Math.pow(2, inputSize); //the number of possible subsets 2^n
-		for(long i = 0; i < subSetsSize; i++){ 
-			long elementToInclude = 1;
-			ArrayList<Tuple> tempList = new ArrayList<Tuple>(); 
-			
-			for(int j = 0; j < inputSize; j++){ // as long as j is less than the number of tuples in the list
-				if((i & elementToInclude) != 0){//Bit masking: performs "bitwise-and" operation 
-					tempList.add(inputList.get(j));
-				}
-				elementToInclude = elementToInclude << 1; //Bit shifting to the left by 1
-			}
-			subSetList.add(tempList);
-		}
-	}
-	
+//	for i = 1 to n
+//		for w = 1 to W
+//			if (wi > w)
+//				M[i, w] = M[i-1, w]
+//			else
+//			M[i, w] = max {M[i-1, w], vi + M[i-1, w-wi]}
+//	return M[n, W]
 
-	/**
-	 * prints the selected best subset and the best value
-	 */
-	public void printBestSet(){
+	
+	public int[][] dynamicKnapsack(){
+		int n = inputList.size()+1;
+		System.out.println("N = " +n);
+		int[][] M = new int[n][W+1];
 		
-		if(subSetList.get(bestSet).size() == 0){
-			System.out.print("Chosen: ");
+		for(int w = 0; w <= W; w++){
+			M[0][w] = 0;
 		}
-		System.out.print("Chosen: ");
-		for(int k = 0; k < subSetList.get(bestSet).size();k++){
-			System.out.print("(" + subSetList.get(bestSet).get(k).getSize() + "," + subSetList.get(bestSet).get(k).getValue() + "),");
+		for(int j = 1; j < n; j++){  //is this needed???
+			M[j][0] = 0;
 		}
-		System.out.println("\nValue: " + bestValue);
+		
+		for(int i =1; i < n; i++) {
+			for(int w=1; w <= W; w++){
+				if(inputList.get(i-1).getWeight() > w){
+					System.out.println("wi > w " + M[i-1][w] + "\n i =" +i + "w = " +w);
+					M[i][w] = M[i-1][w];
+				}
+				else{
+					if(M[i-1][w] > inputList.get(i-1).getValue() + M[i-1][w-inputList.get(i-1).getWeight()]){
+						System.out.println("tar inte i " + M[i-1][w]);
+						M[i][w] = M[i-1][w];
+					}
+					else{
+						M[i][w] = inputList.get(i-1).getValue() + M[i-1][w-inputList.get(i-1).getWeight()];
+						System.out.println("tar i " + (inputList.get(i-1).getValue() + M[i-1][w-inputList.get(i-1).getWeight()]));
+					}
+				}
+			}
+		}
+		return M;
 	}
+	
+	public void printmem(int[][] Mem){
+		for(int j = 0; j < inputList.size()+1 ;j++){
+			for(int i = 0; i <= W; i++){
+				System.out.print(Mem[j][i] + "\t");
+			}
+			System.out.println("");
+		}
+	}
+	
+	
+	
+//	/**
+//	 * prints the selected best subset and the best value
+//	 */
+//	public void printBestSet(){
+//		
+//		if(subSetList.get(bestSet).size() == 0){
+//			System.out.print("Chosen: ");
+//		}
+//		System.out.print("Chosen: ");
+//		for(int k = 0; k < subSetList.get(bestSet).size();k++){
+//			System.out.print("(" + subSetList.get(bestSet).get(k).getSize() + "," + subSetList.get(bestSet).get(k).getValue() + "),");
+//		}
+//		System.out.println("\nValue: " + bestValue);
+//	}
 	
 	/**
 	 * Tuple object consisting of its size and value
@@ -155,16 +191,16 @@ public class Knapsack {
 	 */
 	static class Tuple {
 
-		private int size;
+		private int weight;
 		private int value;
 		
-		public  Tuple(int size, int value){
-			this.size = size;
+		public  Tuple(int weight, int value){
+			this.weight = weight;
 			this.value = value; 
 		}
 		
-		public int getSize(){
-			return size;
+		public int getWeight(){
+			return weight;
 		}
 		public int getValue(){
 			return value;
