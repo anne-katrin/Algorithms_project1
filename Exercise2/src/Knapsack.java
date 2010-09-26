@@ -113,28 +113,17 @@ public class Knapsack {
 		return result;		
 	}
 		
-//	Input: n, W, w1,...,wN, v1,...,vN
-//	for w = 0 to W
-//		M[0, w] = 0
-	
-//	for i = 1 to n
-//		for w = 1 to W
-//			if (wi > w)
-//				M[i, w] = M[i-1, w]
-//			else
-//			M[i, w] = max {M[i-1, w], vi + M[i-1, w-wi]}
-//	return M[n, W]
-
 	
 	public int[][] dynamicKnapsack(){
 		int n = inputList.size()+1;
 		System.out.println("N = " +n);
 		int[][] M = new int[n][W+1];
+		int [] bestSet = new int [inputList.size()];
 		
 		for(int w = 0; w <= W; w++){
 			M[0][w] = 0;
 		}
-		for(int j = 1; j < n; j++){  //is this needed???
+		for(int j = 1; j < n; j++){ 
 			M[j][0] = 0;
 		}
 		
@@ -152,6 +141,7 @@ public class Knapsack {
 					else{
 						M[i][w] = inputList.get(i-1).getValue() + M[i-1][w-inputList.get(i-1).getWeight()];
 						System.out.println("tar i " + (inputList.get(i-1).getValue() + M[i-1][w-inputList.get(i-1).getWeight()]));
+					
 					}
 				}
 			}
@@ -168,7 +158,9 @@ public class Knapsack {
 		}
 	}
 	
-	
+//	public void printBestSet(){
+	//	int[] 
+//	}
 	
 //	/**
 //	 * prints the selected best subset and the best value
