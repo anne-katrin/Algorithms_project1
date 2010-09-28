@@ -16,7 +16,7 @@ public class Knapsack {
 	private String fileName = null;
 	private String fulltext = null;
 	private int W = 0;
-
+	private int[][] Mem;
 	private ArrayList<Tuple> inputList; 
 
 	
@@ -42,8 +42,9 @@ public class Knapsack {
 		Knapsack knap = new Knapsack(file.trim());
 		knap.readFile();
 		//knap.createPowerset();
-		int[][] Mem = knap.dynamicKnapsack();
-		knap.printmem(Mem);
+		knap.Mem = knap.dynamicKnapsack();
+		knap.printmem(knap.Mem);
+		knap.printBestSet(knap.inputList.size(), knap.W);
 	}
 	
 
@@ -116,9 +117,8 @@ public class Knapsack {
 	
 	public int[][] dynamicKnapsack(){
 		int n = inputList.size()+1;
-		System.out.println("N = " +n);
+//		System.out.println("N = " +n);
 		int[][] M = new int[n][W+1];
-		int [] bestSet = new int [inputList.size()];
 		
 		for(int w = 0; w <= W; w++){
 			M[0][w] = 0;
@@ -130,17 +130,17 @@ public class Knapsack {
 		for(int i =1; i < n; i++) {
 			for(int w=1; w <= W; w++){
 				if(inputList.get(i-1).getWeight() > w){
-					System.out.println("wi > w " + M[i-1][w] + "\n i =" +i + "w = " +w);
+//					System.out.println("wi > w " + M[i-1][w] + "\n i =" +i + "w = " +w);
 					M[i][w] = M[i-1][w];
 				}
 				else{
 					if(M[i-1][w] > inputList.get(i-1).getValue() + M[i-1][w-inputList.get(i-1).getWeight()]){
-						System.out.println("tar inte i " + M[i-1][w]);
+//						System.out.println("tar inte i " + M[i-1][w]);
 						M[i][w] = M[i-1][w];
 					}
 					else{
 						M[i][w] = inputList.get(i-1).getValue() + M[i-1][w-inputList.get(i-1).getWeight()];
-						System.out.println("tar i " + (inputList.get(i-1).getValue() + M[i-1][w-inputList.get(i-1).getWeight()]));
+//						System.out.println("tar i " + (inputList.get(i-1).getValue() + M[i-1][w-inputList.get(i-1).getWeight()]));
 					
 					}
 				}
@@ -158,9 +158,25 @@ public class Knapsack {
 		}
 	}
 	
-//	public void printBestSet(){
-	//	int[] 
-//	}
+	public int printBestSet(int inputsize, int w){
+		//int n = inputList.size()+1;
+		System.out.println("Start print best set: ");
+		
+//		if(inputList.get(i).getWeight() > w){
+//			System.out.println("bah");
+//			printBestSet(i-1, w);
+//		}
+
+		for(int i = inputsize; i > 0; i--){
+			if(inputList.get(i-1).getWeight() + Mem[i-1][w-inputList.get(i-1).getWeight()] > Mem[i-1][w] ){
+				System.out.println("use item " + i + "  Mem[i-1][w] " + Mem[i-1][w]);		
+			}
+			else{
+				System.out.println("skip item: " + i);
+			}
+		}
+		return 0;
+	}
 	
 //	/**
 //	 * prints the selected best subset and the best value
