@@ -158,66 +158,23 @@ public class Knapsack {
 		}
 	}
 	
-	public int printBestSet(int inputsize, int Capacity){
+	public void printBestSet(int inputsize, int Capacity){
 		int n = inputList.size();
+		int w = W;
+		System.out.println("Highest Value:" + Mem[n][w]);
 		System.out.println("Start print best set: ");
-		
+
 		
 		for(int i =n; i >= 1; i--) {
-			for(int w=W; w >=1 ; w--){
-				if(inputList.get(i-1).getWeight() > w){
-//					System.out.println("wi > w " + M[i-1][w] + "\n i =" +i + "w = " +w);
-					
+				if(Mem[i][w] == Mem[i-1][w]){
 				}
 				else{
-					if(Mem[i-1][w] > inputList.get(i-1).getValue() + Mem[i-1][w-inputList.get(i-1).getWeight()]){
-//						System.out.println("tar inte i " + M[i-1][w]);
-						
-					}
-					else{
-						//Mem[i][w] = inputList.get(i-1).getValue() + Mem[i-1][w-inputList.get(i-1).getWeight()];
-//						System.out.println("tar i " + (inputList.get(i-1).getValue() + M[i-1][w-inputList.get(i-1).getWeight()]));
-						w = w - inputList.get(i-1).getWeight();
-						System.out.println("take item " + i + " weight " + inputList.get(i-1).getWeight() + " value " + inputList.get(i-1).getValue());
-					}
+					w =w - inputList.get(i-1).getWeight();
+					System.out.println("picked element: " +inputList.get(i-1).getWeight() + "/" +  inputList.get(i-1).getValue()); 
 				}
 			}
-		}
-		return 0;
-
-
-//		for(int i = inputsize; i > 0; i--){
-//			for(int w = Capacity; w > 1; w--){
-////			if(inputList.get(i-1).getWeight() > w){
-////			System.out.println("bah");
-////			printBestSet(i-1, w);
-////		}
-//			
-//			if(inputList.get(i-1).getWeight() + Mem[i-1][w-inputList.get(i-1).getWeight()] > Mem[i-1][w] ){
-//				System.out.println("use item " + i + "  Mem[i-1][w] " + Mem[i-1][w]);		
-//			}
-//			else{
-//				System.out.println("skip item: " + i);
-//			}
-//		}
-//		}
-//		return 0;
 	}
 	
-//	/**
-//	 * prints the selected best subset and the best value
-//	 */
-//	public void printBestSet(){
-//		
-//		if(subSetList.get(bestSet).size() == 0){
-//			System.out.print("Chosen: ");
-//		}
-//		System.out.print("Chosen: ");
-//		for(int k = 0; k < subSetList.get(bestSet).size();k++){
-//			System.out.print("(" + subSetList.get(bestSet).get(k).getSize() + "," + subSetList.get(bestSet).get(k).getValue() + "),");
-//		}
-//		System.out.println("\nValue: " + bestValue);
-//	}
 	
 	/**
 	 * Tuple object consisting of its size and value
