@@ -18,8 +18,6 @@ public class Knapsack {
 	private int W = 0;
 	private int[][] Mem;
 	private ArrayList<Tuple> inputList; 
-	private long start = 0;
-	private long stop = 0;
 	
 	/**
 	 * Constructor
@@ -121,7 +119,6 @@ public class Knapsack {
 	 * @return a filled memory matrix
 	 */
 	public int[][] findBestValue(){
-		start = System.currentTimeMillis();
 
 		int n = inputList.size()+1;
 		int[][] M = new int[n][W+1];
@@ -168,7 +165,6 @@ public class Knapsack {
 					resultList.add(inputList.get(i-1));
 					}
 		}
-		 stop = System.currentTimeMillis();
 
 		System.out.print("Chosen: ");
 		
@@ -176,8 +172,6 @@ public class Knapsack {
 			System.out.print("(" +tup.getWeight() + "," +  tup.getValue() + "), "); 
 		}
 		System.out.println("\nHighest Value:" + Mem[n][W]);
-		long runTime = stop - start;
-		System.out.println("time " + runTime + " start " + start + " Stop: " + stop);
 	}
 	
 	/**
