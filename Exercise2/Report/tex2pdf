@@ -1,0 +1,140 @@
+#!/bin/bash
+BUILD='pdflatex' # Specify build program, pdflatex, latex or tex
+BROWSER='evince' # Specify prefered pdf reader
+
+function processFiles()
+{
+	IFS=$'\n'
+	TEX_FILES="*.tex"
+	INDEX_FILES="$(grep -H -l '^\\printindex' *.tex | exec sed 's/\.[^\.]*$//')"
+	BIBTEX_FILES="$(grep -H -l '^\\bibliography' *.tex | exec sed 's/\.[^\.]*$//')"
+	PDF_FILES="*.pdf"
+}
+
+function buildAll()
+{
+	for f in $TEX_FILES
+			do
+					echo "Building "$f" $(detex "$f" 2> /dev/null | wc -w) words" #This minimal printout will let the user know in which file the error is
+					$BUILD "$f"
+			done
+	for i in $INDEX_FILES
+			do
+					makeindex $(basename "$i" .tex) &>/dev/null
+			done
+	for b in $BIBTEX_FILES
+			do
+					bibtex $(basename "$b" .tex) | grep -e 'Warning--'
+			done
+	for f in $TEX_FILES
+			do
+					$BUILD "$f"
+					$BUILD "$f"
+			done
+	echo "Build completed"
+}
+
+function buildSingleFile()
+{
+	echo "Building "$SINGLE_FILE" $(detex $SINGLE_FILE 2> /dev/null | wc -w) words"
+	$BUILD "$SINGLE_FILE"
+	if [[ 'grep -H -l '^\\printindex' "$SINGLE_FILE"' ]]
+		then
+			makeindex $(basename "$SINGLE_FILE" .tex) &>/dev/null
+	fi
+  if [[ 'grep -H -l '^\\bibliography*' "$SINGLE_FILE"' ]]
+		then
+			bibtex $(basename "$SINGLE_FILE" .tex)  | grep -e 'Warning--'
+	fi
+	$BUILD "$SINGLE_FILE"
+	$BUILD "$SINGLE_FILE"
+	echo "single file with $(detex $SINGLE_FILE 2> /dev/null | wc -w) words build completed"
+	$BROWSER $(basename "$SINGLE_FILE" .tex).pdf &
+}
+
+if [ "$1" = "-help" ]
+then
+	echo -e "\n\b\033[37m NAME"
+	tput sgr0
+	echo -e "\ttex2pdf - build .pdf files from .tex files"
+	echo -e "\033[37m SYNOPSIS"
+	tput sgr0
+	echo -e "\t./tex2pdf [-f path/file.tex] [-d path/directory] [-v]\n"
+	echo -e "\t-help\t\tdisplays this text"
+	echo -e "\t./tex2pdf\tbuilds all files in current directory"
+	echo -e "\t-d\t\tbuilds all files in specified directory"
+	echo -e "\t-f\t\tbuilds only the specified file"
+	echo -e "\t-v\t\tgives you more information from the build"
+	echo -e "\t-clean\t\tremoves temporary files in current directory"
+	echo -e "\t-eclean\t\tremoves temporary files and all pdfs in current directory"
+	echo -e "\033[37m DESCRIPTION"
+	tput sgr0
+	echo -e "\tThe script looks through the .tex file(s) and"
+	echo -e "\tdetermines if makeindex or bibtex needs to be"
+	echo -e "\tcalled to produce the final pdf(s)"
+	echo -e "\033[37m EXAMPLE"
+	tput sgr0
+	echo -e "\t1. example that builds all .tex files in specified"
+	echo -e "\tdirectory in verbose mode:"
+	echo -e "\t\033[34m./tex2pdf -d ../../my_documents -v\n"
+	tput sgr0
+	echo -e "\t2. example that builds a specified .tex file:"
+	echo -e "\t\033[34m./tex2pdf -f ../../my_documents/protocol.tex"
+	echo -e "\033[37m AUTHOR"
+	tput sgr0
+	echo -e "\tThis script was created by Magnus Södergren\n"
+exit
+fi
+
+function clean()
+{
+	rm *.log *.aux *.out *.ind *.bbl *.toc *.dvi *.ilg *.idx *.glo *.*~ *.blg *.brf *.backup 2> /dev/null
+}
+
+function eclean()
+{
+	rm *.log *.aux *.out *.ind *.bbl *.toc *.dvi *.ilg *.idx *.glo *.*~ *.blg *.brf *.backup *.pdf 2> /dev/null
+}
+
+if [ "$1" = "-clean" ]; then
+		clean
+		exit
+fi
+
+if [ "$1" = "-eclean" ]; then
+		eclean
+		exit
+fi
+
+if [ "$1" = "-d" -a "$3" = "-v" ]; then
+				cd "$2"
+				processFiles
+				buildAll
+				exit
+		elif [[ "$1" = "-d" ]]; then
+				cd "$2"
+				processFiles
+				buildAll 1| grep -e "Build *" -e 'Warning--'
+				clean &
+				exit
+		elif [ "$1" = "-f" -a "$3" = "-v" ]; then
+				cd $(dirname "$2")
+				SINGLE_FILE="$(basename "$2")"
+				buildSingleFile
+				exit
+		elif [[ "$1" = "-f" ]]; then
+				cd $(dirname "$2")
+				SINGLE_FILE=$(basename "$2")
+				buildSingleFile 1| grep -e "Build *" -e 'Warning--' -e "single*"
+				clean &
+				exit
+		elif [[ "$1" = "-v" ]]; then
+				processFiles
+				buildAll
+				exit
+		else
+				processFiles
+				buildAll 1| grep -e "Build *" -e 'Warning--'
+				clean &
+				exit
+fi
