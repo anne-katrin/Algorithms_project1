@@ -6,6 +6,7 @@
 \usepackage{multirow}
 \usepackage{moreverb}
 \usepackage{url}
+\usepackage{color}
 
 \pdfsubject{}
 \keywords{}
@@ -44,8 +45,10 @@ After reading the input file and putting each of these objects into a Tuple whic
 
 \section{Algorithm in Pseudocode}
 
-\subsection{Reccurance}
-The reccurance used for finding the best value is defined below. \citep{Tardos}
+\subsection{Recurrence}
+\label{Recurrance}
+
+The recurrence used for finding the best value is defined below. \citep{Tardos} {\color{red}{Add referens to slides?}}
 
 $OPT(i,w)$= \Bigg\{ \begin{tabular}{ll} 
 0 & if $i$ = 0 \\
@@ -53,10 +56,10 @@ $OPT(i-1, w)$ & if $w_i > w$ \\
 max \{$OPT(i-1, w), v_i + OPT(i-1, w-w_i )$\} & otherwise\\
 \end{tabular}
 
-The first row is the base case, if $i$ is equal to zero the recursion returns. Then there is a check to see if $w_i$ is greater then capacity, if so it skips object $i$ and continues. The last row takes the max of not taking the element versus taking the element. 
+The first row is the base case, if $i$ is equal to zero the recursion returns. The second case is a check to see if $w_i$ is greater then capacity, if so it skips object $i$ and continues. The third case on the last row takes the max of not taking the element versus taking the element. 
 
 \subsection{Pseudocode for finding best value}
-In this chapter the algorithm will be explained in more detail. The following is the pseudocode for filling the matrix. \newline
+In this chapter the algorithm will be explained in more detail. The following is the pseudocode for the function findBestValue(). {\color{red}{Add referens to slides?}}\newline
 
 \begin{lstlisting}
 
@@ -86,15 +89,18 @@ return M[n, W]
 
 \end{lstlisting}
 
+This function is based on the recurrence in the section Recurrence with the difference that it is implemented using loops instead of recurrence and by using the matrix $M$ to remember the results. The first two for loops are part of the pre-processing for the algorithm and initializes the first row and column in the matrix to zeros. The algorithm then checks if the object $i$ in the input list fits in the current capacity, defined as $w$, if it fits it executes a max function of not taking the object and taking the object and stores the max in the matrix as seen in Figure \ref{unmarked_matrix}. 
 
-\noindent This function fills the matrix ... more description more\\ \\ 
 
+{\color{red}{add which objects the matrix is for}}
 \begin{figure}[h!]
   \centering
       \includegraphics[width=0.5\textwidth]{unmarked_matrix.png}
   \caption{An example of a filled in matrix}
+\label{unmarked_matrix}
 \end{figure}
 
+\subsection{Pseudocode for tracing best solution}
 
 The second part of the algorithm is to trace the tuples that give the highest value and have a weight less than or equal to the capacity of the knapsack. This pseudocode represents the function printBestSet(). \\ 
 
@@ -102,8 +108,8 @@ The second part of the algorithm is to trace the tuples that give the highest va
 n = size of the input list containing all the tuples
 w = the size of the Knapsack 
 
-for i is n to 1 loop
-	if (array[i][weight] is equal to array[i-1][weight])
+for i = n to 1 loop
+	if (M[i][weight] is equal to M[i-1][weight])
 		do nothing;
 	
 	else
@@ -114,7 +120,7 @@ for i is n to 1 loop
 end for
 \end{lstlisting}
 
-\noindent In this part of the algorithm the solution of the problem is reconstructed. This is done by tracing back and comparing the wights of tuples in the matrix. The back tracing starts at the last entry of the matrix (i is n \&\& w is the size of the Knapsack)  ... MORE\\
+In this part of the algorithm the solution of the problem is reconstructed. This is done by tracing back and comparing the values of the cells in the  matrix. The back tracing starts at the last entry of the matrix (where $i$ = $n$ and $w$ = the size of the Knapsack). Looking at the example matrix \ref{marked_matrix} the algorithm compares the value of place M[i,w] and M[i-1,w] and seeing they both have value 11, object 5 is not included in the optimal solution. If the place of M[i,w] and M[i-1,w] do not have the same value then object $i$ is included in the optimal solution and the algorithm includes this object in the optimal solution and continues to check at place M[i][w-$w_i$] which would be the seven marked in red in the example matrix \ref{marked_matrix}.\\
 
 
 
@@ -122,6 +128,7 @@ end for
   \centering
       \includegraphics[width=0.5\textwidth]{marked_matrix.png}
   \caption{An example of a matrix for tracing best set solution }
+  \label{marked_matrix}
 \end{figure}
 
 
@@ -241,10 +248,13 @@ The result gives an upper bound by $O(2^n*n)$
 
 \section{Performance Test}
 
-The time for each test is measured in milliseconds. The tests were done by using java.lang.System.currentTimeMillis() to get one start time as the first thing done in the createPowerset method in the algorithm, and one stop time at the second last line (before calling the printBestSet method) in selectBestSet. The resulting execution time was calculated by subtrackting the the start time from the stop time to get a result of how long the algorithm was executing with the different input files.\\
+The time for each test is measured in milliseconds. The tests were done by using java.lang.System.currentTimeMillis() to get one start time as the first thing done in the findBestValue method in the algorithm, and one stop time in the printBestSet method after the best set is recoverd but before the result is printed to the screen.. The resulting execution time was calculated by subtrackting the the start time from the stop time to get a result of how long the algorithm was executing with the different input files. The result of the previous lab with exhaustive search is also included, n/a in this table means that the algorithm could not deal with that many input objects and ran out of memory. \\
 
+\begin{table}
+\begin{center}
+\caption{Test result exhaustive search}
 \begin{tabular}{|l|l|l|} \hline
-Items &Capacity &Execution time\\ \hline
+Objects &Capacity &Execution time\\ \hline
 \multirow{3}{*}{10} & 6 & 11 \\
 & 20 & 11 \\
 & 35 & 10 \\ \hline
@@ -254,7 +264,57 @@ Items &Capacity &Execution time\\ \hline
 \multirow{3}{*}{20} & 6 & 1460 \\
 & 20 & 1447 \\
 & 35 & 1445 \\ \hline
+\multirow{3}{*}{50} & 30 & n/a \\
+& 80 & n/a \\
+& 120 & n/a \\ \hline
+\multirow{3}{*}{100} & 30 &  n/a\\
+& 80 & n/a \\
+& 120 & n/a \\ \hline
+\multirow{3}{*}{500} & 120 & n/a \\
+& 250 & n/a \\
+& 400 & n/a \\ \hline
+\multirow{3}{*}{2000} & 400 & n/a \\
+& 800 & n/a \\
+& 1500 & n/a \\ \hline
+\multirow{3}{*}{8000} & 1500 & n/a \\
+& 4000 & n/a \\
+& 7000 & n/a \\ \hline
 \end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\caption{Test result dynamic programming}
+\begin{tabular}{|l|l|l|} \hline
+Objects &Capacity &Execution time\\ \hline
+\multirow{3}{*}{10} & 6 & 0 \\
+& 20 & 0 \\
+& 35 & 1 \\ \hline
+\multirow{3}{*}{15} & 6 & 0 \\
+& 20 & 0 \\
+& 35 & 1 \\ \hline
+\multirow{3}{*}{20} & 6 & 0 \\
+& 20 & 0 \\
+& 35 & 1 \\ \hline
+\multirow{3}{*}{50} & 30 & 7 \\
+& 80 & 8 \\
+& 120 & 8 \\ \hline
+\multirow{3}{*}{100} & 30 & 7 \\
+& 80 & 9 \\
+& 120 & 11 \\ \hline
+\multirow{3}{*}{500} & 120 & 30 \\
+& 250 & 43 \\
+& 400 & 40 \\ \hline
+\multirow{3}{*}{2000} & 400 & 94 \\
+& 800 & 104 \\
+& 1500 & 108 \\ \hline
+\multirow{3}{*}{8000} & 1500 & 212 \\
+& 4000 & 279 \\
+& 7000 & 1046 \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
 
 \appendix
 \section{Compile and run program}
