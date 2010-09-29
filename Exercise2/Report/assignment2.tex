@@ -91,8 +91,6 @@ return M[n, W]
 
 This function is based on the recurrence in the section Recurrence with the difference that it is implemented using loops instead of recurrence and by using the matrix $M$ to remember the results. The first two for loops are part of the pre-processing for the algorithm and initializes the first row and column in the matrix to zeros. The algorithm then checks if the object $i$ in the input list fits in the current capacity, defined as $w$, if it fits it executes a max function of not taking the object and taking the object and stores the max in the matrix as seen in Figure \ref{unmarked_matrix}. 
 
-
-{\color{red}{add which objects the matrix is for}}
 \begin{figure}[h!]
   \centering
       \includegraphics[width=0.5\textwidth]{unmarked_matrix.png}
@@ -120,7 +118,7 @@ for i = n to 1 loop
 end for
 \end{lstlisting}
 
-In this part of the algorithm the solution of the problem is reconstructed. This is done by tracing back and comparing the values of the cells in the  matrix. The back tracing starts at the last entry of the matrix (where $i$ = $n$ and $w$ = the size of the Knapsack). Looking at the example matrix \ref{marked_matrix} the algorithm compares the value of place M[i,w] and M[i-1,w] and seeing they both have value 11, object 5 is not included in the optimal solution. If the place of M[i,w] and M[i-1,w] do not have the same value then object $i$ is included in the optimal solution and the algorithm includes this object in the optimal solution and continues to check at place M[i][w-$w_i$] which would be the seven marked in red in the example matrix \ref{marked_matrix}.\\
+In this part of the algorithm the solution of the problem is reconstructed. This is done by tracing back and comparing the values of the cells in the  matrix. The back tracing starts at the last entry of the matrix (where $i$ = $n$ and $w$ = the size of the Knapsack). Looking at the example matrix Figure \ref{marked_matrix} the algorithm compares the value of place M[i,w] and M[i-1,w] and seeing they both have value 11, object 5 is not included in the optimal solution. If the place of M[i,w] and M[i-1,w] do not have the same value then object $i$ is included in the optimal solution and the algorithm includes this object in the optimal solution and continues to check at place M[i][w-$w_i$] which would be the seven marked in red in the example matrix Figure \ref{marked_matrix}.\\
 
 
 
