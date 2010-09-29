@@ -56,7 +56,7 @@ $OPT(i-1, w)$ & if $w_i > w$ \\
 max \{$OPT(i-1, w), v_i + OPT(i-1, w-w_i )$\} & otherwise\\
 \end{tabular}
 
-The first row is the base case, if $i$ is equal to zero the recursion returns. The second case is a check to see if $w_i$ is greater then capacity, if so it skips object $i$ and continues. The third case on the last row takes the max of not taking the element versus taking the element. 
+The first row is the base case, if $i$ is equal to zero the recursion returns. The second case is a check to see if $w_i$ is greater then the capacity, if so it skips object $i$ and continues. The third case on the last row uses the max function on not taking the element versus taking the element. 
 
 \subsection{Pseudocode for finding best value}
 In this chapter the algorithm will be explained in more detail. The following is the pseudocode for the function findBestValue(). {\color{red}{Add referens to slides?}}\newline
