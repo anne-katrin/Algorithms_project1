@@ -48,7 +48,7 @@ After reading the input file and putting each of these objects into a Tuple whic
 \subsection{Recurrence}
 \label{Recurrance}
 
-The recurrence used for finding the best value is defined below. \citep{Tardos} {\color{red}{Add referens to slides?}}
+The recurrence used for finding the best value is defined below. \citep{Tardos} \citep{slides}
 
 $OPT(i,w)$= \Bigg\{ \begin{tabular}{ll} 
 0 & if $i$ = 0 \\
@@ -59,7 +59,7 @@ max \{$OPT(i-1, w), v_i + OPT(i-1, w-w_i )$\} & otherwise\\
 The first row is the base case, if $i$ is equal to zero the recursion returns. The second case is a check to see if $w_i$ is greater then the capacity, if so it skips object $i$ and continues. The third case on the last row uses the max function on not taking the element versus taking the element. 
 
 \subsection{Pseudocode for finding best value}
-In this chapter the algorithm will be explained in more detail. The following is the pseudocode for the function findBestValue(). {\color{red}{Add referens to slides?}}\newline
+In this chapter the algorithm will be explained in more detail. The following is the pseudocode for the function findBestValue(). \citep{Tardos}
 
 \begin{lstlisting}
 
@@ -132,7 +132,7 @@ In this part of the algorithm the solution of the problem is reconstructed. This
 
 
 \section{Correctness Justification}
-
+The justification of the algorithm correctness is done by refering to the induction steps of the recurrence section in chapter 2. \\
 
 \section{Complexity Analysis}
 \subsection{Complexity for finding best value}
@@ -281,7 +281,7 @@ Objects &Capacity &Execution time\\ \hline
 \end{tabular}
 \end{center}
 \end{table}
-
+\newpage
 \appendix
 \section{Compile and run program}
 \noindent Compile the program with 'javac Knapsack.java'\\ 
