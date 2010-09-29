@@ -41,7 +41,7 @@ public class Knapsack {
 		}
 		Knapsack knap = new Knapsack(file.trim());
 		knap.readFile();
-		knap.Mem = knap.dynamicKnapsack();
+		knap.Mem = knap.findBestValue();
 //		knap.printmem(knap.Mem);
 		knap.printBestSet();
 	}
@@ -119,7 +119,7 @@ public class Knapsack {
 	 * 
 	 * @return a filled memory matrix
 	 */
-	public int[][] dynamicKnapsack(){
+	public int[][] findBestValue(){
 		int n = inputList.size()+1;
 		int[][] M = new int[n][W+1];
 		
