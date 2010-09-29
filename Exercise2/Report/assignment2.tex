@@ -86,37 +86,44 @@ return M[n, W]
 
 \end{lstlisting}
 
+
 \noindent This function fills the matrix ... more description \\ \\ 
 
-The second part of the algorithm is to select the best possible subset and is shown in the pseudocode for function ``selectBestSet()``.\\
+\begin{figure}[h!]
+  \centering
+      \includegraphics[width=0.5\textwidth]{unmarked_matrix.png}
+  \caption{An example of a filled in matrix}
+\end{figure}
+
+
+The second part of the algorithm is to trace the tuples that give the highest value and have a weight less than or equal to the capacity of the knapsack. This pseudocode represents the function printBestSet(). \\ 
 
 \begin{lstlisting}
-k = Size of list containing all possible subsets
-capacity = the capacity of the knapsack
-bestValue = the best value of all subsets (intiated to 0)
-bestSet = the set that gives bestValue
+n = size of the input list containing all the tuples
+w = the size of the Knapsack 
 
-for i = 1 to k loop
-
-  sumSizes = 0
-  sumValue = 0
-
-  for j = 1 to size of subset i loop
-   store tuple j from subset i in tuple t
-    add the size of the tuple t to sumSizes and store in sumSizes
-    add the value of the tuple t to sumValue and store in sumValue
-  end for
-
-  if (sumSizes is less than or equal to the capacity)
-    if(sumValue is greater than bestValue)
-      store sumValue as bestValue
-      store set i as bestSet
-    end if
-  end if
+for i is n to 1 loop
+	if (array[i][weight] is equal to array[i-1][weight])
+		do nothing;
+	
+	else
+		w = w - the weight of the object i-1 in the input list
+		print the tuples
+	end if 
+	
 end for
 \end{lstlisting}
 
-\noindent This part of the algorithm is a greedy algorithm which chooses the best possible subset for the Knapsack problem, if several subsets produces equally good value the first such subset is selected. The function loops through all created subsets and adds up all sizes and values of the tuples in that subset. It then checks if the sum of the sizes is less than or equal to the capacity of the Knapsack and if it is it will check if the sum of the values of this subset is better than the previous bestValue. If a new bestValue was optained it will be stored as bestValue and also the subset giving this bestValue will be stored until the algorithm finds a subset which results in a better value.\\
+\noindent In this part of the algorithm the solution of the problem is reconstructed. This is done by tracing back and comparing the wights of tuples in the matrix. The back tracing starts at the last entry of the matrix (i is n \&\& w is the size of the Knapsack)  ... MORE\\
+
+
+
+\begin{figure}[h!]
+  \centering
+      \includegraphics[width=0.5\textwidth]{marked_matrix.png}
+  \caption{An example of a matrix for tracing best set solution }
+\end{figure}
+
 
 \section{Correctness Justification}
 
