@@ -83,6 +83,7 @@ for i = 1 to n loop
 		else
 			M[i, w] = max {M[i-1, w], vi + M[i-1, w-wi]}
 		end if
+	end for
 end for
 
 return M[n, W]
@@ -132,121 +133,88 @@ In this part of the algorithm the solution of the problem is reconstructed. This
 
 \section{Correctness Justification}
 
-The correctness of the algorithm is justified in two seperate sections, one for each part of the algorithm. For this the course litterature has been used for viewing examples of proofs \citep{Tardos}.
-
-\subsection{Create powerset}
-For the set $S = \{a,b,c\}$ a correct power set for S is $P = \{\{\},\{a\},\{b\},\{c\},\{a,b\},\{a,c\},\{b,c\},\{a,b,c\}$.
-
-The createPowerset part of the algorithm has to make sure that each of the subsets in set $P$ are created. 
-
-To do this, $n$ is defined as the number of elements in set $S$. In an execution of the algorithm the elements in $S$ would consist of tuples with a weight and size but here the tuples are represented by label $a,b$ and $c$.
-
-The power set will have $2^n$ subset as shown in set $P$.\\\\
-
-\textbf{Proof by contradiction}
-
-Assume that the createPowerset part of the algoritm does not produce set $P$ when given the input of set $S$.
-
-Letting the binary code for $i = 0$ to $2^n-1$ represent each possible subset, where a one in the binary code of $i$ means that the element from set $S$ at the place where the one is placed will be included and a zero means the element will not be included. For example, when $i = 5$ the binary code is 101 and the algorithm would include element $a$ and $c$ from the set $S$. By letting $element$ represent the placement of the element in set $S$ and setting $element = 1$, using a ''bitwise and'' compairison between $i$ \& $element$ where the result is $\neq0$ the element from set $S$ at place $element$ would be included in the subset. Since the algorithm for each $i$ iterates $n$ times, shifting the bit set to one in $element$ one step to the left compairing each binary code of $i = 0$ to $2^n-1$ with each element in set $S$ (represented by $elements$). Each possible subset will be created. A contradiction to our original assumption.
-
-\subsection{Select best set}
-
-\textbf{Proof by contradiction}
-
-Assume that the selectBestSet does not select the best value among the subsets that fit in the knapsack.
-
-Let $i = 0$ loop to $n$ where $n$ is the size of the subsetList and $j = 0$ loop through every object/Tuple in each subset $i$. For each object in a subset $i$ the algorithm stores the sum of the sizes and the sum of the values. It then compares if the size is $<=$ to the capacity, if so, the set would fit in the knapsack. When $i = 0$ it stores the first result of the values in $bestValue$ provided that the subset fit in the knapsack and at which position in the subsetList this subset $i$ was located. In the following iterations from $i$ to $n$ it only stores a new $bestValue$ (and where that set was located) if a better value was obtained until all subsets have been tested. This contradicts the assumption and when the algorithm has finished executing it has selected the first, if more than one, subset which fits in the knapsack and gives the highest possible value.
 
 \section{Complexity Analysis}
-
-The sums of the complexity of the knapsack problem are set up individually for the create power set and the select best set parts of the algorithms and are then calculated by adding them togheter.
-
-\textbf{Elementary operation} is the same for the two parts of the algorithm. Assignment, if statements, adding elements to the end of arraylist and lookup in an arraylist are seen as elementary operations. In the pseudocode below for the two parts the number to the left indicate the complexity for each line of code.
-
-\subsection{Create Power set}
+\subsection{Complexity for finding best value}
 
 \begin{lstlisting}
-1			n = Size of the tuple list (input)
-1			m = Size of possible subsets 2^n
 
+1			n = size of the input list
+1			W = capacity of the Knapsack
+1			w1,...,wN = weights of objects in input list
+1			v1,...,vN = values of objects in input list
 
-2^n			for i = 0 to m-1 loop	
-1				element = 1	
-1				create temporary arraylist
-	  
-n				for j = 0 to n-1 loop	
-1					if (i "bitwise and" element is not 0)
-1						add tuple to temporary arraylist
-				  end if
-1					element = element << 1
-			  end for\begin{align}
-	
-1			add subset to list
+W			for w = 0 to W loop
+1				M[0, w] = 0
 			end for
-\end{lstlisting}
 
-\begin{equation}
-\sum^{2^n}_{i =1}3\sum^n_{j=1}3%= 
-%\sum^{2^n}_{i =1}3(n-1+3) = 
-%\sum^{2^n}_{i =1}3(n+2) = 
-%(2^n-1+3)*(n+2) \in O(2n^n)
-\end{equation}
+n			for j = 1 to n loop
+1				M[j, 0] = 0
+			end for
 
-
-\subsection{Select best set}
-
-\begin{lstlisting}
-1			k = Size of list containing all possible subsets
-1			capacity = the capacity of the knapsack
-1			bestValue = the best value of all subsets (intiated to 0)
-1			bestSet = the set that gives bestValue
-
-2^n			for i = 1 to k loop
-
-1				sumSizes = 0
-1				sumValue = 0
-
-<=n				for j = 1 to size of subset i loop
-1					store tuple j from subset i in tuple t
-1					add the size of the tuple t to sumSizes and store in sumSizes
-1					add the value of the tuple t to sumValue and store in sumValue
-			  end for
-
-1				if (sumSizes is less than or equal to the capacity)
-1					if(sumValue is greater than bestValue)
-1						store sumValue as bestValue
-1						store set i as bestSet
+n			for i = 1 to n loop
+W				for w = 1 to W
+1					if (wi > w)
+1						M[i, w] = M[i-1, w]
+					 else
+1						if(M[i-1][w] > vi + M[i-1][w-wi])
+1							M[i][w] = M[i-1][w];						
+						else
+1							M[i][w] = vi + M[i-1][w-wi];
+						end if
 					end if
-				end if
+				end for
 			end for
+
+1			return M[n, W]
+
 \end{lstlisting}
 
 
 \begin{equation}
-\sum^{2^n}_{i=1}(6)\sum^n_{j=1}(3)
+ 5+\sum^W_{w=0}(1)+\sum^n_{j=1}(1)+\sum^n_{i=1}\sum^W_{w=1}(5)
 \end{equation}
 
-\subsection{Complexity of knapsack exhaustive search}
 
-The calculation below is the sum of the set up of the create power set function and the select best set function.
 
+
+\subsection{Complexity for tracing best solution}
+
+\begin{lstlisting}
+1		n = size of the input list containing all the tuples
+1		w = the size of the Knapsack 
+
+n		for i = n to 1 loop
+1			if (M[i][weight] is equal to M[i-1][weight])
+				do nothing;
+	
+			else
+1				w = w - the weight of the object i-1 in the input list
+1				print the tuples
+			end if 
+	
+		end for
+\end{lstlisting}
+
+\begin{equation}
+ 2+\sum^n_{i=1}(3)
+\end{equation}
+
+\subsection{Total Complexity}
 \begin{equation}
 \begin{split}
-\sum^{2^n}_{i =1}3\sum^n_{j=1}3+\sum^{2^n}_{k=1}(6)\sum^n_{l=1}(3)= \\
-\sum^{2^n}_{i =1}3(n-1+3) + \sum^{2^n}_{k =1}6(n-1+3) =  \\
-\sum^{2^n}_{i =1}3(n+2) + \sum^{2^n}_{k =1}6(n+2) = \\
-(2^n-1+3)*(n+2) + (2^n-1+6)*(n+2) = \\
-(2^n+2)*(n+2) + (2^n+5)*(n+2) \in O(2^n*n)
+ 5+\sum^W_{w=0}(1)+\sum^n_{j=1}(1)+\sum^n_{i=1}\sum^W_{w=1}(5)+ 2+\sum^n_{i=1}(3)= \\
+7+W-0+1+n-1+1+(n-1*(W-1+5))+n-1+3= \\
+7+W+1+n+(n-1*(W+4))+n+2= \\
+W+2n+10(n-1*(W+4))= \\
+n*W+W+2n+cn \in O(n*W)
 \end{split}
 \end{equation}
-
-The result gives an upper bound by $O(2^n*n)$
-
 
 
 \section{Performance Test}
 
-The time for each test is measured in milliseconds. The tests were done by using java.lang.System.currentTimeMillis() to get one start time as the first thing done in the findBestValue method in the algorithm, and one stop time in the printBestSet method after the best set is recoverd but before the result is printed to the screen.. The resulting execution time was calculated by subtrackting the the start time from the stop time to get a result of how long the algorithm was executing with the different input files. The result of the previous lab with exhaustive search is also included, n/a in this table means that the algorithm could not deal with that many input objects and ran out of memory. \\
+The time for each test is measured in milliseconds. The tests were done by using java.lang.System.currentTimeMillis() to get one start time as the first thing done in the findBestValue method in the algorithm, and one stop time in the printBestSet method after the best set is recoverd but before the result is printed to the screen. The resulting execution time was calculated by subtrackting the the start time from the stop time to get a result of how long the algorithm was executing with the different input files. The result of the previous lab with exhaustive search is also included, n/a in this table means that the algorithm could not deal with that many input objects and ran out of memory. \\
 
 \begin{table}
 \begin{center}
