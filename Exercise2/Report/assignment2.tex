@@ -30,39 +30,50 @@ Linda Nilsson \\ 840703-4860 \\ \mail{nilind@ituniv.se}\\ \tabularnewline
 
 
 
-\textbf{Definitions:} The number of objects that are in the input file are defined as n, and the capacity of the Knapsack is defined as w.\\
+\textbf{Definitions:} The number of objects that are in the input file are defined as n, and the capacity of the Knapsack is defined as W.\\
 
 \noindent \textbf{Pseudocode:}
 \begin{tabbing}
 For \= all the objects in the input file \\
-\> fill an \= n by w matrix	\\
-\> select the elements that give the highest value and fit into the Knapsack\\
+\> fill an \= n by W matrix	\\
+\> select the objects that give the highest value and fit into the Knapsack\\
 \end{tabbing}
 
-After reading the input file and putting each of these objects into a Tuple which has a weight and a value, the algorithm consists of two parts. First of all, the algorithm fills a matrix (which is going to be a two dimensional array) with all the possible values for the tuples and second of all it selects the tuples which have a weight less or equal to the capacity of the knapsack and give the highest value. \\ 
+After reading the input file and putting each of these objects into a Tuple which has a weight and a value, the algorithm consists of two parts. First of all, the algorithm fills a matrix (which is going to be a two dimensional array) with the best values the first n tuples can give, which is less than or equal to W. Secondly, it traces which tuples (based on the matrix) gives the highest value and has a weight less than or equal to the capacity of the knapsack. \\ 
  
 
 \section{Algorithm in Pseudocode}
-In this chapter the algorithm will be explained in more detail. The following is the pseudocode for the function "createPowerset()". \newline
+In this chapter the algorithm will be explained in more detail. The following is the pseudocode for filling the matrix. \newline
 
 \begin{lstlisting}
-n = Size of the tuple list 	
-m = Size of possible subsets 2^n
 
-for i = 0 to  m-1 loop
-  element = 1  
-  create temporary arraylist  
-    for j = 0 to n-1 loop
-       if (i "bitwise and" element is not 0)
-         add tuple to temporary arraylist
-       end if
-       element = element << 1
-    end for
-    add subset to list
+n = size of the input list
+W = capacity of the Knapsack
+w1,...,wN = weights of objects in input list
+v1,...,vN = values of objects in input list
+
+for w = 0 to W loop
+	M[0, w] = 0
 end for
+
+for j = 1 to n loop
+	M[j, 0] = 0
+end for
+
+for i = 1 to n loop
+	for w = 1 to W
+		if (wi > w)
+			M[i, w] = M[i-1, w]
+		else
+			M[i, w] = max {M[i-1, w], vi + M[i-1, w-wi]}
+		end if
+end for
+
+return M[n, W]
+
 \end{lstlisting}
 
-\noindent This function creates a power set, which is a set of all possible subsets of the set and the set itself. It is known that the power set will have $2^n$ subsets. Through bit masking with the bitwise "and" operator and letting i = 1 to m represent all possible subsets, it is checked if the corresponding bits are both 1, in which case the current tuple is saved in a temporary array list. Using the shift left operator $<<$ the element is shifted one step to the left before next iteration to enable checking if the next element is part of the current subset. The final step before next iteration is to add the resulting subset to the list of subsets. Inspiration to the binary solution was taken from \citep{powerset}, section ``It's Binary``. \\ \\ 
+\noindent This function fills the matrix ... more description \\ \\ 
 
 The second part of the algorithm is to select the best possible subset and is shown in the pseudocode for function ``selectBestSet()``.\\
 
