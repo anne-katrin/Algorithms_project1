@@ -41,10 +41,9 @@ public class Knapsack {
 		}
 		Knapsack knap = new Knapsack(file.trim());
 		knap.readFile();
-		//knap.createPowerset();
 		knap.Mem = knap.dynamicKnapsack();
-		knap.printmem(knap.Mem);
-		knap.printBestSet(knap.inputList.size(), knap.W);
+//		knap.printmem(knap.Mem);
+		knap.printBestSet();
 	}
 	
 
@@ -114,10 +113,14 @@ public class Knapsack {
 		return result;		
 	}
 		
-	
+	/**
+	 * fills a matrix to find the highest possible value that can be obtained for the knapsack
+	 * 
+	 * 
+	 * @return a filled memory matrix
+	 */
 	public int[][] dynamicKnapsack(){
 		int n = inputList.size()+1;
-//		System.out.println("N = " +n);
 		int[][] M = new int[n][W+1];
 		
 		for(int w = 0; w <= W; w++){
@@ -130,18 +133,14 @@ public class Knapsack {
 		for(int i =1; i < n; i++) {
 			for(int w=1; w <= W; w++){
 				if(inputList.get(i-1).getWeight() > w){
-//					System.out.println("wi > w " + M[i-1][w] + "\n i =" +i + "w = " +w);
 					M[i][w] = M[i-1][w];
 				}
 				else{
 					if(M[i-1][w] > inputList.get(i-1).getValue() + M[i-1][w-inputList.get(i-1).getWeight()]){
-//						System.out.println("tar inte i " + M[i-1][w]);
 						M[i][w] = M[i-1][w];
 					}
 					else{
 						M[i][w] = inputList.get(i-1).getValue() + M[i-1][w-inputList.get(i-1).getWeight()];
-//						System.out.println("tar i " + (inputList.get(i-1).getValue() + M[i-1][w-inputList.get(i-1).getWeight()]));
-					
 					}
 				}
 			}
@@ -149,32 +148,38 @@ public class Knapsack {
 		return M;
 	}
 	
-	public void printmem(int[][] Mem){
-		for(int j = 0; j < inputList.size()+1 ;j++){
-			for(int i = 0; i <= W; i++){
-				System.out.print(Mem[j][i] + "\t");
-			}
-			System.out.println("");
-		}
-	}
-	
-	public void printBestSet(int inputsize, int Capacity){
+	/**
+	 * Prints the best highest value that can be selected and which items to select to get this value
+	 * 
+	 */
+	public void printBestSet(){
 		int n = inputList.size();
 		int w = W;
-		System.out.println("Highest Value:" + Mem[n][w]);
-		System.out.println("Start print best set: ");
-
-		
+		System.out.print("Chosen: ");
 		for(int i =n; i >= 1; i--) {
 				if(Mem[i][w] == Mem[i-1][w]){
 				}
 				else{
 					w =w - inputList.get(i-1).getWeight();
-					System.out.println("picked element: " +inputList.get(i-1).getWeight() + "/" +  inputList.get(i-1).getValue()); 
+					System.out.print("(" +inputList.get(i-1).getWeight() + "," +  inputList.get(i-1).getValue() + "), "); 
 				}
-			}
+		}
+		System.out.println("\nHighest Value:" + Mem[n][W]);
 	}
 	
+	/**
+	 * For printing the Memory matrix after it has been filled 
+	 * 
+	 * @param Mem a filled memory matrix
+	 */
+//	public void printmem(int[][] Mem){
+//		for(int j = 0; j < inputList.size()+1 ;j++){
+//			for(int i = 0; i <= W; i++){
+//				System.out.print(Mem[j][i] + "\t");
+//			}
+//			System.out.println("");
+//		}
+//	}
 	
 	/**
 	 * Tuple object consisting of its size and value
