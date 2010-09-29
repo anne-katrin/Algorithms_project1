@@ -30,16 +30,16 @@ Linda Nilsson \\ 840703-4860 \\ \mail{nilind@ituniv.se}\\ \tabularnewline
 
 
 
-\textbf{Measures:} The number of objects that are in the input file defined as n, and the number of possible subsets which can be created from them ($2^n$), defined as m are measured.\\
+\textbf{Definitions:} The number of objects that are in the input file are defined as n, and the capacity of the Knapsack is defined as w.\\
 
 \noindent \textbf{Pseudocode:}
 \begin{tabbing}
 For \= all the objects in the input file \\
-\> create \= power set	\\
-\> select the best subset from the power set with the highest value\\
+\> fill an \= n by w matrix	\\
+\> select the elements that give the highest value and fit into the Knapsack\\
 \end{tabbing}
 
-After reading the input file and putting each of these objects into a Tuple which has a size and a value, the algorithm consists of two parts. First of all, the algorithm creates a power set (all possible subsets plus the set itself, see \citep{Gersting}) of the input Tuples, and second of all it selects the first subset which has a size less or equal to the capacity of the knapsack and has the highest value.\\
+After reading the input file and putting each of these objects into a Tuple which has a weight and a value, the algorithm consists of two parts. First of all, the algorithm fills a matrix (which is going to be a two dimensional array) with all the possible values for the tuples and second of all it selects the tuples which have a weight less or equal to the capacity of the knapsack and give the highest value. \\ 
  
 
 \section{Algorithm in Pseudocode}
