@@ -137,7 +137,7 @@
 \definecolor{listinggray}{gray}{0.9}
 \definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
 \lstset{
-%  backgroundcolor=\color{lbcolor},
+  %backgroundcolor=\color{lbcolor},
   tabsize=4,
   rulecolor=,
   language=C,

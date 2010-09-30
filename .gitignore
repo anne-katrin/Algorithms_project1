@@ -1,2 +1,11 @@
 *.class
 *.tar.gz
+*.*~
+*.aux
+*.bbl
+*.brf
+*.log
+*.out
+*.blg
+*.backup
+*.pdf
