@@ -3,9 +3,7 @@
 % \makeindex
 %\usepackage[firstpage]{draftwatermark} %uncomment to set document as draft
 
-\usepackage{multirow}
 \usepackage{moreverb}
-\usepackage{url}
 
 \pdfsubject{}
 \keywords{}
@@ -212,8 +210,12 @@ The result gives an upper bound by $O(2^n*n)$
 
 The time for each test is measured in milliseconds. The tests were done by using java.lang.System.currentTimeMillis() to get one start time as the first thing done in the createPowerset method in the algorithm, and one stop time at the second last line (before calling the printBestSet method) in selectBestSet. The resulting execution time was calculated by subtrackting the the start time from the stop time to get a result of how long the algorithm was executing with the different input files.\\
 
-\begin{tabular}{|l|l|l|} \hline
-Items &Capacity &Execution time\\ \hline
+
+\begin{table}
+\begin{center}
+\caption{Test result exhaustive search}
+\begin{tabular}{|>{\color{blue}}l|>{\color{blue}}l|>{\color{blue}}l|} \hline
+Objects &Capacity &Execution time\\ \hline
 \multirow{3}{*}{10} & 6 & 11 \\
 & 20 & 11 \\
 & 35 & 10 \\ \hline
@@ -223,8 +225,26 @@ Items &Capacity &Execution time\\ \hline
 \multirow{3}{*}{20} & 6 & 1460 \\
 & 20 & 1447 \\
 & 35 & 1445 \\ \hline
+\multirow{3}{*}{50} & 30 & n/a \\
+& 80 & n/a \\
+& 120 & n/a \\ \hline
+\multirow{3}{*}{100} & 30 &  n/a\\
+& 80 & n/a \\
+& 120 & n/a \\ \hline
+\multirow{3}{*}{500} & 120 & n/a \\
+& 250 & n/a \\
+& 400 & n/a \\ \hline
+\multirow{3}{*}{2000} & 400 & n/a \\
+& 800 & n/a \\
+& 1500 & n/a \\ \hline
+\multirow{3}{*}{8000} & 1500 & n/a \\
+& 4000 & n/a \\
+& 7000 & n/a \\ \hline
 \end{tabular}
+\end{center}
+\end{table}
 
+\newpage
 \appendix
 \section{Compile and run program}
 \noindent Compile the program with 'javac Knapsack.java'\\ 

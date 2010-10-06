@@ -63,7 +63,8 @@
 \RequirePackage{amsmath,amsthm,amssymb} % mathematical packages
 \RequirePackage{array} %  An extended implementation of the array and tabular
 \RequirePackage[sort&compress,longnamesfirst,round]{natbib}
-\RequirePackage{color} % more color
+\RequirePackage{color,colortbl} % more color
+\RequirePackage{multirow}
 \RequirePackage{verbatim,listings} % add source code to your document
 \RequirePackage{lastpage} % total page count
 \RequirePackage{pdfpages} % to import PDF pages
